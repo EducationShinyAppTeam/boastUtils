@@ -5,12 +5,20 @@ boastApp <- function(ui, server) {
     document_ = TRUE,
     body = ui
   )
+  
+  shinyApp(ui, injectBoastConfig(server))
+}
 
-  shinyApp(ui, server)
+injectBoastConfig <- function(server) {
+  server_body <- body(server)
+  last_call <- length(as.list(server_body))
+  languageEl(body(server), which = last_call) <- str2lang("boastConnect(session)")
+
+  return(server)
 }
 
 #' @export
-boastConfig <- function(session, config = NULL) {
+boastConnect <- function(session) {
   # Setup locker configuration
   config <- list(
     base_url = "https://learning-locker.stat.vmhost.psu.edu/",
