@@ -44,7 +44,8 @@ ui <- dashboardPage(
 
 # Define server logic required
 server <- function(input, output, session) {
-
+  message("\nrlocker status")
+  message_for_status(connection$status)
 }
 
 # Run the application
