@@ -24,7 +24,7 @@ devtools::install_github("EducationShinyAppTeam/boastUtils")
 
 One way to accomplish serving a more standardized codebase was to
 provide a wrapper for the default
-[shinyApp](https://shiny.rstudio.com/reference/shiny/0.14/shinyApp.html)
+[shinyApp](https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html)
 function. Instead of including the `shiny` package, include `boastUtils`
 and write your app as normal. Be sure to replace `shinyApp` with
 `boastApp`.
