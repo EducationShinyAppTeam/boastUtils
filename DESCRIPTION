@@ -1,8 +1,8 @@
 Package: boastUtils
 Type: Package
 Title: BOAST Utilities
-Version: 0.1.0
-Date: 2019-11-12
+Version: 0.1.1
+Date: 2019-11-27
 Authors@R: c(person("Robert", "Carey", email = "rpc5102@psu.edu",
   role = c("aut", "cre")))
 Maintainer: Robert Carey <rpc5102@psu.edu>
@@ -12,6 +12,6 @@ BugReports: https://github.com/EducationShinyAppTeam/boastUtils/issues
 License: GPL-3.0+
 Encoding: UTF-8
 LazyData: true
-Depends: shiny (>= 0.11), shinydashboard, htmltools, rlocker
+Depends: shiny (>= 0.11), shinydashboard, htmltools, rlocker, rsconnect, lintr
 RoxygenNote: 6.1.1
 Remotes: rpc5102/rlocker
