@@ -2,5 +2,6 @@
 
 export(boastApp)
 export(deployApp)
+export(getCurrentAddress)
 export(psu_eberly_logo)
 export(scripts)

@@ -3,6 +3,7 @@
 \name{deployApp}
 \alias{deployApp}
 \title{todo:
+- check if rsconnect account info is set if not ask for it
 - write library manifest
 - run lintr
 - deployApp}
@@ -11,6 +12,7 @@ deployApp(...)
 }
 \description{
 todo:
+- check if rsconnect account info is set if not ask for it
 - write library manifest
 - run lintr
 - deployApp
