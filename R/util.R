@@ -46,11 +46,14 @@ boastConnect <- function(session) {
 # Gets page address from the current session
 #'@export
 getCurrentAddress <- function(session) {
+  port <- ifelse(is.null(session$clientData$url_port), NULL, paste0(":", session$clientData$url_port))
+  path <- ifelse(is.null(port), sub("/$", "", session$clientData$url_pathname), session$clientData$url_pathname)
+  
   return(paste0(
     session$clientData$url_protocol, "//",
     session$clientData$url_hostname,
-    session$clientData$url_pathname, ":",
-    session$clientData$url_port,
+    port,
+    path,
     session$clientData$url_search
   ))
 }
