@@ -27,7 +27,7 @@ provide a wrapper for the default
 [shinyApp](https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html)
 function. Instead of including the `shiny` package, include `boastUtils`
 and write your app as normal. Be sure to replace `shinyApp` with
-`boastApp`.
+`boastApp`. **Note**: The server argument `session` is required.
 
 ##### Example app.R
 
