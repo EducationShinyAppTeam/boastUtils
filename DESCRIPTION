@@ -13,5 +13,5 @@ License: GPL-3.0+
 Encoding: UTF-8
 LazyData: true
 Depends: shiny (>= 0.11), shinydashboard, htmltools, rlocker, rsconnect, lintr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Remotes: rpc5102/rlocker

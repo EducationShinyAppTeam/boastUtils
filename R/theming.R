@@ -1,8 +1,54 @@
-#'logos
+#'theming
 #'
-#' Contains a set of commonly used logos
-#' @name logos
+#' Contains a set of commonly used assets for app design
+#' @name theming
 NULL
+
+#' boastPalette
+#' 
+#' Based on the Wong color blind set
+#' 
+#' @examples 
+#' showPalette(boastPalette)
+#' 
+#' @export
+boastPalette <- c(
+  "#0072B2",
+  "#D55E00",
+  "#009E73",
+  "#CE77A8",
+  "#000000",
+  "#E69F00",
+  "#999999",
+  "#56B4E9",
+  "#CC79A7"
+)
+
+#' psuPalette
+#' 
+#' Based on Penn State's three official color palettes.
+#' @seealso \link{https://brand.psu.edu/design-essentials.html#color}
+#' 
+#' @examples 
+#' showPalette(psuPalette)
+#' 
+#' @export
+psuPalette <- c(
+  "#1E407C",
+  "#BC204B",
+  "#3EA39E",
+  "#E98300",
+  "#999999",
+  "#AC8DCE",
+  "#F2665E",
+  "#99CC00"
+)
+
+#' showPalette
+#' @export
+showPalette <- function(palette) {
+  graphics::pie(rep(1, length(palette)), palette, col = palette)
+}
 
 #' PennState Eberly College of Science Logo
 #'
@@ -17,22 +63,22 @@ NULL
 psu_eberly_logo <- function(style = "default"){
 
   colors <- list(
-    'primary' = '#065094',
-    'secondary' = '#96BEE6',
-    'font' = '#065094'
+    "primary" = "#065094",
+    "secondary" = "#96BEE6",
+    "font" = "#065094"
   )
 
-  if(style == "rev" || style == "reversed"){
+  if (style == "rev" || style == "reversed") {
     colors <- list(
-      'primary' = '#065094',
-      'secondary' = '#96BEE6',
-      'font' = '#FFFFFF'
+      "primary" = "#065094",
+      "secondary" = "#96BEE6",
+      "font" = "#FFFFFF"
     )
-  } else if(style == "black" || style == "greyscale" || style == "grayscale"){
+  } else if (style == "black" || style == "greyscale" || style == "grayscale") {
     colors <- list(
-      'primary' = '#000000',
-      'secondary' = '#A7A9AC',
-      'font' = '#000000'
+      "primary" = "#000000",
+      "secondary" = "#A7A9AC",
+      "font" = "#000000"
     )
   }
 

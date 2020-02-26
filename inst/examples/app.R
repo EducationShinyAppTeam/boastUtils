@@ -5,7 +5,7 @@ ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(
     title = "APP_TITLE",
-    tags$li(class = "dropdown", tags$a(href='https://shinyapps.science.psu.edu/', icon("home")))
+    tags$li(class = "dropdown", tags$a(href = "https://shinyapps.science.psu.edu/", icon("home")))
   ),
   dashboardSidebar(
     sidebarMenu(

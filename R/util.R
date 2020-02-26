@@ -22,7 +22,11 @@ scripts <- function() {
 injectBoastConfig <- function(server) {
 
   body <- as.list(body(server))
-  call <- as.call(quote({connection <- boastUtils:::boastInit(session)}))
+  call <- as.call(
+    quote({
+      connection <- boastUtils:::boastInit(session)
+    })
+  )
 
   body(server) <- as.call(append(body, call, 1))
 

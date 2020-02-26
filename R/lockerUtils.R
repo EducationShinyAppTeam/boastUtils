@@ -10,7 +10,7 @@ bindInputEvents <- function(session) {
 
 # todo: generalize to support most common use cases without reproducing all of rlocker::createStatement()
 .generateStatement <- function(session, verb = NA, object = NA, description = NA, value = NA, extensions = NULL) {
-  if(is.na(object)){
+  if (is.na(object)) {
     object <- paste0("#shiny-tab-", session$input$tabs)
   } else {
     object <- paste0("#", object)
@@ -25,14 +25,13 @@ bindInputEvents <- function(session) {
     )
   )
   
-  if(!is.na(value)){
+  if (!is.na(value)) {
     stmt$result <- list(
-      response = paste(value),
-      
+      response = paste(value)
     ) 
   }
   
-  if(!is.null(extensions)){
+  if (!is.null(extensions)) {
     stmt$result["extensions"] = list(
       ref = extensions$ref, value = extensions$value
     )
