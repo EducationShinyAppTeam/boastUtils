@@ -3,15 +3,23 @@
 \name{linters}
 \alias{linters}
 \alias{boast_comment_linter}
+\alias{boast_function_linter}
 \title{linters}
 \usage{
-boast_comment_linter(source_file)
+boast_comment_linter(source_file, recommended_length = 15)
+
+boast_function_linter(source_file)
 }
 \description{
 Contains a set linters for code deployment and review.
+
+As apposed to the built-in commented_code_linter,
+this linter is intended to encourage the writing of better comments.
 }
 \section{Functions}{
 \itemize{
-\item \code{boast_comment_linter}: checks that '<-' is always used for assignment
+\item \code{boast_comment_linter}: checks that code is commented
+
+\item \code{boast_function_linter}: checks that code is using function calls
 }}
 

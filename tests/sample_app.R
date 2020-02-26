@@ -19,7 +19,7 @@ ui <- list(
     dashboardSidebar(
       sidebarMenu(
         id = "tabs",
-        menuItem("Prerequisites", tabName = "Prerequisites", icon = icon("book")),
+        menuItem("Prerequisites", tabName = "Prerequisites", icon = icon("book")), # testing
         menuItem("Overview", tabName = "Overview", icon = icon("dashboard")),
         menuItem("Explore", tabName = "Explore", icon = icon("wpexplorer")),
         menuItem("Challenge", tabName = "Challenge", icon = icon("gears"))
@@ -42,10 +42,10 @@ ui <- list(
 
 #' Define server logic
 server <- function(input, output, session) {
-  #' Load any exported modules into the current session
-  for(module in isolate(reactiveValuesToList(modules))){
-    callModule(module, namespace)
-  }
+  cba <- "321"
+  # test <- 1
+  # tokens <- tokens[are_todo, ]
+  abc <- "123"
 }
 
 #' Create Shiny App

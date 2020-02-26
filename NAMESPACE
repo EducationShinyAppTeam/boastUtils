@@ -3,6 +3,7 @@
 export(boastApp)
 export(boastPalette)
 export(boast_comment_linter)
+export(boast_function_linter)
 export(deployApp)
 export(getCurrentAddress)
 export(psuPalette)

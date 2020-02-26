@@ -16,6 +16,6 @@ showPalette(psuPalette)
 
 }
 \seealso{
-\link{https://brand.psu.edu/design-essentials.html#color}
+\href{https://brand.psu.edu/design-essentials.html#color}{https://brand.psu.edu/}
 }
 \keyword{datasets}

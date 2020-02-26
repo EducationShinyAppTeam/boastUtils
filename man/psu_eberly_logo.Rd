@@ -21,5 +21,5 @@ PennState Eberly College of Science Logo
 }
 
 \seealso{
-\link{http://visualidentity.psu.edu/}
+\href{http://visualidentity.psu.edu/}{http://visualidentity.psu.edu/}
 }

@@ -70,7 +70,7 @@ checkCode <- function() {
     linters = with_defaults(
       boast_comment_linter,
       cyclocomp_linter,
-      commented_code_linter = NULL,
+      commented_code_linter,
       object_name_linter = NULL,
       camel_case_linter = NULL,
       trailing_blank_lines_linter = NULL,

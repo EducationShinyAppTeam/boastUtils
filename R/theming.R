@@ -27,7 +27,7 @@ boastPalette <- c(
 #' psuPalette
 #' 
 #' Based on Penn State's three official color palettes.
-#' @seealso \link{https://brand.psu.edu/design-essentials.html#color}
+#' @seealso \href{https://brand.psu.edu/design-essentials.html#color}{https://brand.psu.edu/}
 #' 
 #' @examples 
 #' showPalette(psuPalette)
@@ -58,7 +58,7 @@ showPalette <- function(palette) {
 #'
 #' @section Example:
 #'   \figure{PSU_SCI_RGB_2C.png}{options: width=250 alt="Default"}
-#' @seealso \link{http://visualidentity.psu.edu/}
+#' @seealso \href{http://visualidentity.psu.edu/}{http://visualidentity.psu.edu/}
 #' @export
 psu_eberly_logo <- function(style = "default"){
 
