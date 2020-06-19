@@ -4,7 +4,9 @@
 \name{psuPalette}
 \alias{psuPalette}
 \title{psuPalette}
-\format{An object of class \code{character} of length 8.}
+\format{
+An object of class \code{character} of length 8.
+}
 \usage{
 psuPalette
 }

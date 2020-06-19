@@ -16,6 +16,9 @@ Contains a set linters for code deployment and review.
 As apposed to the built-in commented_code_linter,
 this linter is intended to encourage the writing of better comments.
 }
+\details{
+todo: capture function definitions to see if previous line has any comments
+}
 \section{Functions}{
 \itemize{
 \item \code{boast_comment_linter}: checks that code is commented

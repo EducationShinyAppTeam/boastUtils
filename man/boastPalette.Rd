@@ -4,7 +4,9 @@
 \name{boastPalette}
 \alias{boastPalette}
 \title{boastPalette}
-\format{An object of class \code{character} of length 9.}
+\format{
+An object of class \code{character} of length 9.
+}
 \usage{
 boastPalette
 }

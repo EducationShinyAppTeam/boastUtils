@@ -9,7 +9,7 @@ NULL
 #' As apposed to the built-in commented_code_linter,
 #' this linter is intended to encourage the writing of better comments.
 #' 
-#' @todo: capture function definitions to see if previous line has any comments
+#' todo: capture function definitions to see if previous line has any comments
 #' 
 #' @describeIn linters checks that code is commented
 #' @export

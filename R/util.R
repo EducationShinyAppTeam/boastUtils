@@ -37,20 +37,15 @@ boastInit <- function(session) {
   connection <- boastUtils:::boastConnect(session)
   
   boastUtils:::bindInputEvents(session)
+  boastUtils:::bindSessionEnd(session)
   
   return(connection)
 }
 
 boastConnect <- function(session) {
-  # Setup learning locker configuration
-  config <- list(
-    base_url = "https://learning-locker.stat.vmhost.psu.edu/",
-    auth = "Basic YWVlMjQ2ZDJmMzk2OWMwYTk0NTY3ZTQ0ZThiMDU3NDI3MjhhNWFiYjpmYWU4NDkwNTVlMzNiMDEyNzY0OGIyOGI5YzliZjI2NjMyYzFhYzJk",
-    agent = rlocker::createAgent()
-  )
-
+  
   # Initialize Learning Locker connection
-  connection <- rlocker::connect(session, config)
+  connection <- rlocker::connect(session, .lockerConfig)
 
   return(connection)
 }
