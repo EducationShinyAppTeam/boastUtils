@@ -8,6 +8,8 @@ boastApp(ui, server)
 }
 \description{
 Overrides the default shinyApp ui and server config
-- ui includes template for accessibility fixes and consistent styling
-- server config adds setup defaults
+\itemize{
+\item ui includes template for accessibility fixes and consistent styling
+\item server config adds setup defaults
+}
 }

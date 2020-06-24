@@ -17,7 +17,7 @@ PennState Eberly College of Science Logo
 }
 \section{Example}{
 
-  \figure{PSU_SCI_RGB_2C.png}{options: width=250 alt="Default"}
+\figure{PSU_SCI_RGB_2C.png}{options: width=250 alt="Default"}
 }
 
 \seealso{

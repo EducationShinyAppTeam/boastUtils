@@ -1,8 +1,8 @@
 Package: boastUtils
 Type: Package
 Title: BOAST Utilities
-Version: 0.1.5
-Date: 2020-06-19
+Version: 0.1.6
+Date: 2020-06-24
 Authors@R: c(
   person("Robert", "Carey", email = "rpc5102@psu.edu", role = c("aut", "cre")),
   person("Neil", "Hatfield", email = "njh5464@psu.edu", role = "aut")
@@ -16,4 +16,5 @@ Encoding: UTF-8
 LazyData: true
 Depends: shiny (>= 0.11), shinydashboard, htmltools, rlocker, rsconnect, lintr
 RoxygenNote: 7.1.0
+Roxygen: list(markdown = TRUE)
 Remotes: rpc5102/rlocker

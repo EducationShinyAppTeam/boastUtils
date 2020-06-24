@@ -3,17 +3,21 @@
 \name{deployApp}
 \alias{deployApp}
 \title{todo:
-- check if rsconnect account info is set if not ask for it
-- write library manifest
-- run lintr
-- deployApp}
+\itemize{
+\item check if rsconnect account info is set if not ask for it
+\item write library manifest
+\item run lintr
+\item deployApp
+}}
 \usage{
 deployApp(...)
 }
 \description{
 todo:
-- check if rsconnect account info is set if not ask for it
-- write library manifest
-- run lintr
-- deployApp
+\itemize{
+\item check if rsconnect account info is set if not ask for it
+\item write library manifest
+\item run lintr
+\item deployApp
+}
 }
