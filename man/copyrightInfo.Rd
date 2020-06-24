@@ -7,7 +7,7 @@
 copyrightInfo()
 }
 \value{
-svg
+html
 }
 \description{
 Renders licensing info as HTML.

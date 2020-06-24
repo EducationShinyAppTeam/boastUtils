@@ -10,7 +10,7 @@ psu_eberly_logo(style = "default")
 \item{style}{Logo style \code{[default, reversed, grayscale]}}
 }
 \value{
-svg
+html
 }
 \description{
 PennState Eberly College of Science Logo
