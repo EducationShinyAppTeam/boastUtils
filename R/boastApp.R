@@ -6,11 +6,12 @@
 #'
 #' @export
 boastApp <- function(ui, server) {
+
   ui <- htmlTemplate(
     system.file("templates", "template.html", package = "boastUtils"),
     document_ = TRUE,
     body = ui
   )
 
-  shinyApp(ui, injectBoastConfig(server))
+  shinyApp(ui, .injectBoastConfig(server))
 }

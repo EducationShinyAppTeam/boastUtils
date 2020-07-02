@@ -3,7 +3,6 @@
 #' - write library manifest
 #' - run lintr
 #' - deployApp
-#' @export
 deployApp <- function(...) {
   
   continue <- TRUE

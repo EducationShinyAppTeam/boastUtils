@@ -12,7 +12,6 @@ NULL
 #' todo: capture function definitions to see if previous line has any comments
 #' 
 #' @describeIn linters checks that code is commented
-#' @export
 boast_comment_linter <- function(source_file, recommended_length = 15) {
   lapply(ids_with_token(source_file, "COMMENT"),
     function(id) {
@@ -40,7 +39,6 @@ boast_comment_linter <- function(source_file, recommended_length = 15) {
 #' Function Linter
 #' 
 #' @describeIn linters checks that code is using function calls
-#' @export
 boast_function_linter <- function(source_file) {
   lapply(ids_with_token(source_file, "COMMENT"),
      function(id) {

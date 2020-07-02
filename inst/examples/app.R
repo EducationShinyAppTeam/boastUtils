@@ -1,10 +1,12 @@
 library(boastUtils)
 
+APP_TITLE <<- "APP_TITLE"
+
 # Define UI for application
 ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(
-    title = "APP_TITLE",
+    title = APP_TITLE,
     tags$li(class = "dropdown", tags$a(href = "https://shinyapps.science.psu.edu/", icon("home")))
   ),
   dashboardSidebar(
@@ -12,6 +14,7 @@ ui <- dashboardPage(
       id = "tabs",
       menuItem("Sample", tabName = "Sample", icon = icon("book"))
     ),
+    tableOutput("inputDebugger"),
     tags$div(
       class = "sidebar-logo",
       psu_eberly_logo("reversed")
@@ -36,7 +39,9 @@ ui <- dashboardPage(
            Torquent lobortis sociosqu accumsan condimentum ac mauris rhoncus lacinia,
            proin lacus leo scelerisque amet tempus purus vehicula, tempor aliquam primis placerat venenatis risus sed.
            Fames litora commodo turpis sit efficitur nisl ad curabitur malesuada,
-           torquent nascetur lobortis natoque enim consequat nisi.")
+           torquent nascetur lobortis natoque enim consequat nisi."),
+        textInput("sample_input", label = "Sample Input", value = "Placeholder"),
+        actionButton("quit", "Quit")
       )
     )
   )
@@ -44,8 +49,12 @@ ui <- dashboardPage(
 
 # Define server logic required
 server <- function(input, output, session) {
-  message("\nrlocker status")
+  message("\nrLocker status")
   message_for_status(connection$status)
+  
+  observeEvent(input$quit, stopApp())
+  
+  boastUtils:::.renderInputDebugger(session)
 }
 
 # Run the application

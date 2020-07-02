@@ -19,12 +19,13 @@ scripts <- function() {
 }
 
 # Injects config into the start of the server function
-injectBoastConfig <- function(server) {
+.injectBoastConfig <- function(server) {
 
   body <- as.list(body(server))
+  
   call <- as.call(
     quote({
-      connection <- boastUtils:::boastInit(session)
+      connection <- boastUtils:::.boastInit(session)
     })
   )
 
@@ -33,19 +34,20 @@ injectBoastConfig <- function(server) {
   return(server)
 }
 
-boastInit <- function(session) {
-  connection <- boastUtils:::boastConnect(session)
+.boastInit <- function(session) {
   
-  boastUtils:::bindInputEvents(session)
-  boastUtils:::bindSessionEnd(session)
+  connection <- boastUtils:::.boastConnect(session)
+  
+  boastUtils:::.bindInputEvents(session)
+  boastUtils:::.bindSessionEnd(session)
   
   return(connection)
 }
 
-boastConnect <- function(session) {
+.boastConnect <- function(session) {
   
   # Initialize Learning Locker connection
-  connection <- rlocker::connect(session, .lockerConfig)
+  connection <- rlocker::connect(session, getLockerConfig())
 
   return(connection)
 }
