@@ -66,3 +66,16 @@ getCurrentAddress <- function(session) {
     session$clientData$url_search
   ))
 }
+
+#' Gets properties set in boastUtils/config.yml
+getConfig <- function() {
+  install_path <- find.package("boastUtils")
+  conf <- config::get(file = paste0(install_path, "/config.yml"))
+  return(conf)
+}
+
+#' Check to see if current environment is local or shinyapps.io
+#'@export
+is_local <- function() {
+  return(!nzchar(Sys.getenv("SHINY_PORT")))
+}

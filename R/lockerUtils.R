@@ -1,11 +1,10 @@
 # Return auth based on current hosting environment
 .getAuth <- function() {
   # equiv shiny:::inShinyServer
-  is_local <- !nzchar(Sys.getenv("SHINY_PORT"))
   auth <- NA_character_
   
   # Separate xAPI Statements in a different Store
-  if(is_local) {
+  if(is_local()) {
     auth <- "Basic NmIwZjAzMGE3ODJmYWY3ZGE0NDhjNGJkZjVkNTEwYTFkODQzNjM3NDoyNmU1MThjNTI2M2ZiZWEwMDIyM2YwYmIwZjM3OThmNTc2NWZiZGU5"
   } else {
     auth <- "Basic YWVlMjQ2ZDJmMzk2OWMwYTk0NTY3ZTQ0ZThiMDU3NDI3MjhhNWFiYjpmYWU4NDkwNTVlMzNiMDEyNzY0OGIyOGI5YzliZjI2NjMyYzFhYzJk"
