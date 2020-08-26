@@ -22,6 +22,14 @@ dbConnect <- function() {
 # db create / base name off of current app id
 initAppStorage <- function(conn) {
   id <- boastUtils:::getAppIdentifier()
+  db_name <- NA_character_
+  
+  # Check if app is running locally or deployed on shinyapps.io
+  if(is_local()) {
+    
+  } else {
+    # use shinyapps.io id
+  }
 }
 
 # db write

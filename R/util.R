@@ -70,7 +70,7 @@ getCurrentAddress <- function(session) {
 #' Gets properties set in boastUtils/config.yml
 getConfig <- function() {
   install_path <- find.package("boastUtils")
-  conf <- config::get(file = paste0(install_path, "/config.yml"))
+  conf <- config::get(file = file.path(install_path, "config.yml"))
   return(conf)
 }
 
@@ -82,35 +82,30 @@ is_local <- function() {
 
 #' Gets app id based on current deployed state
 #' @export
-getAppIdentifier <- function(use_local = FALSE) {
+getAppIdentifier <- function() {
   id <- NA_character_
   
-  # Check if app is running locally or deployed on shinyapps.io
-  if(is_local() || use_local) {
-    # Generate a temp uuid
-    temp_uuid <- uuid::UUIDgenerate()
-    # If app is local, check if metadata file exists
-    if(file.exists("DESCRIPTION")) {
-      # Check to see if identifier is stored, if not, store it.
-      stored_uuid <- read.dcf("DESCRIPTION", fields = "UUID")
-      if(!is.na(stored_uuid[1])){
-        id <- stored_uuid
-      } else {
-        boastUtils:::setAppIdentifier(temp_uuid)
-      }
+  # Generate a temp uuid
+  temp_uuid <- uuid::UUIDgenerate()
+  # If app is local, check if metadata file exists
+  if(file.exists("DESCRIPTION")) {
+    # Check to see if identifier is stored, if not, store it.
+    stored_uuid <- read.dcf("DESCRIPTION", fields = "UUID")
+    if(!is.na(stored_uuid[1])){
+      id <- stored_uuid
     } else {
-      # Suggest creating it / continue using temp id
-      message(
-        paste(
-          "DESCRIPTION metadata file not file, consider creating one. See:",
-          "  https://github.com/rstudio/shiny-examples/blob/master/001-hello/DESCRIPTION",
-          sep = "\n"  
-        )
-      )
-      id <- temp_uuid
+      boastUtils:::setAppIdentifier(temp_uuid)
     }
   } else {
-    # use shinyapps.io id
+    # Suggest creating it / continue using temp id
+    message(
+      paste(
+        "DESCRIPTION metadata file not file, consider creating one. See:",
+        "  https://github.com/rstudio/shiny-examples/blob/master/001-hello/DESCRIPTION",
+        sep = "\n"  
+      )
+    )
+    id <- temp_uuid
   }
   
   return(id)
@@ -121,6 +116,7 @@ setAppIdentifier <- function(uuid) {
   success <- FALSE
   tryCatch({
     if(rstudioapi::isAvailable()){
+      ##### TODO THIS WON'T WORK ####
       dir <- dirname(rstudioapi::getSourceEditorContext()$path)
       file <- file.path(dir, "DESCRIPTION")
       write.dcf(UUID, file = file, append = TRUE)
