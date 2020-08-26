@@ -75,7 +75,61 @@ getConfig <- function() {
 }
 
 #' Check to see if current environment is local or shinyapps.io
-#'@export
+#' @export
 is_local <- function() {
   return(!nzchar(Sys.getenv("SHINY_PORT")))
+}
+
+#' Gets app id based on current deployed state
+#' @export
+getAppIdentifier <- function(use_local = FALSE) {
+  id <- NA_character_
+  
+  # Check if app is running locally or deployed on shinyapps.io
+  if(is_local() || use_local) {
+    # Generate a temp uuid
+    temp_uuid <- uuid::UUIDgenerate()
+    # If app is local, check if metadata file exists
+    if(file.exists("DESCRIPTION")) {
+      # Check to see if identifier is stored, if not, store it.
+      stored_uuid <- read.dcf("DESCRIPTION", fields = "UUID")
+      if(!is.na(stored_uuid[1])){
+        id <- stored_uuid
+      } else {
+        boastUtils:::setAppIdentifier(temp_uuid)
+      }
+    } else {
+      # Suggest creating it / continue using temp id
+      message(
+        paste(
+          "DESCRIPTION metadata file not file, consider creating one. See:",
+          "  https://github.com/rstudio/shiny-examples/blob/master/001-hello/DESCRIPTION",
+          sep = "\n"  
+        )
+      )
+      id <- temp_uuid
+    }
+  } else {
+    # use shinyapps.io id
+  }
+  
+  return(id)
+}
+
+setAppIdentifier <- function(uuid) {
+  UUID <- as.data.frame(uuid)
+  success <- FALSE
+  tryCatch({
+    if(rstudioapi::isAvailable()){
+      dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+      file <- file.path(dir, "DESCRIPTION")
+      write.dcf(UUID, file = file, append = TRUE)
+      success <- TRUE
+    } else {
+      warning("Unable to determine root directory, skipping DESCRIPTION output.")
+    }
+  }, error = function(err) {
+    warning(err)
+  })
+  return(success)
 }

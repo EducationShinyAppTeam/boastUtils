@@ -21,23 +21,7 @@ dbConnect <- function() {
 
 # db create / base name off of current app id
 initAppStorage <- function(conn) {
-  if(is_local()) {
-    # use uuid stored somewhere
-    uuid <- uuid::UUIDgenerate()
-    if(file.exists("DESCRIPTION")) {
-      stored_uuid <- read.dcf("DESCRIPTION", fields = "UUID") 
-      if(!is.na(stored_uuid[1])){
-        
-      } else {
-        # store it
-      }
-    } else {
-      
-    }
-    
-  } else {
-    # use shinyapps.io id
-  }
+  id <- boastUtils:::getAppIdentifier()
 }
 
 # db write
