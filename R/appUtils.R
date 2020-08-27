@@ -36,6 +36,13 @@ scripts <- function() {
 
 .boastInit <- function(session) {
   
+  # Setup environment variables
+  BASE_DIR <- normalizePath(getwd())
+  APP_NAME <- basename(BASE_DIR)
+  APP_ROOT <- BASE_DIR
+  Sys.setenv("APP_NAME" = APP_NAME)
+  Sys.setenv("APP_ROOT" = APP_ROOT)
+  
   connection <- boastUtils:::.boastConnect(session)
   
   boastUtils:::.bindInputEvents(session)
@@ -67,17 +74,17 @@ getCurrentAddress <- function(session) {
   ))
 }
 
-#' Gets properties set in boastUtils/config.yml
-getConfig <- function() {
-  install_path <- find.package("boastUtils")
-  conf <- config::get(file = file.path(install_path, "config.yml"))
-  return(conf)
-}
-
 #' Check to see if current environment is local or shinyapps.io
 #' @export
-is_local <- function() {
+isLocal <- function() {
   return(!nzchar(Sys.getenv("SHINY_PORT")))
+}
+
+#' Returns the working directory set at startup
+#' @seealso Sys.getenv("PWD") on shinyapps.io
+#' @export
+getAppRoot <- function() {
+  return(Sys.getenv("APP_ROOT"))
 }
 
 #' Gets app id based on current deployed state
@@ -90,8 +97,9 @@ getAppIdentifier <- function() {
   # If app is local, check if metadata file exists
   if(file.exists("DESCRIPTION")) {
     # Check to see if identifier is stored, if not, store it.
-    stored_uuid <- read.dcf("DESCRIPTION", fields = "UUID")
-    if(!is.na(stored_uuid[1])){
+    DESCRIPTION <- file.path(getAppRoot(), "DESCRIPTION")
+    stored_uuid <- read.dcf(DESCRIPTION, fields = "UUID")
+    if (!is.na(stored_uuid[1])) {
       id <- stored_uuid
     } else {
       boastUtils:::setAppIdentifier(temp_uuid)
@@ -111,18 +119,25 @@ getAppIdentifier <- function() {
   return(id)
 }
 
+#' Gets properties set in boastUtils/config.yml
+getConfig <- function() {
+  install_path <- find.package("boastUtils")
+  conf <- config::get(file = file.path(install_path, "config.yml"))
+  return(conf)
+}
+
+#' Writes UUID to App DESCRIPTION file in project root
 setAppIdentifier <- function(uuid) {
   UUID <- as.data.frame(uuid)
   success <- FALSE
   tryCatch({
-    if(rstudioapi::isAvailable()){
-      ##### TODO THIS WON'T WORK ####
-      dir <- dirname(rstudioapi::getSourceEditorContext()$path)
-      file <- file.path(dir, "DESCRIPTION")
-      write.dcf(UUID, file = file, append = TRUE)
+    APP_ROOT <- getAppRoot()
+    if (APP_ROOT != "") {
+      DESCRIPTION <- file.path(APP_ROOT, "DESCRIPTION")
+      write.dcf(UUID, file = DESCRIPTION, append = TRUE)
       success <- TRUE
     } else {
-      warning("Unable to determine root directory, skipping DESCRIPTION output.")
+      warning("Unable to determine root directory, skipping DESCRIPTION file creation.")
     }
   }, error = function(err) {
     warning(err)

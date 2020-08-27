@@ -25,7 +25,7 @@ initAppStorage <- function(conn) {
   db_name <- NA_character_
   
   # Check if app is running locally or deployed on shinyapps.io
-  if(is_local()) {
+  if(isLocal()) {
     
   } else {
     # use shinyapps.io id
