@@ -2,7 +2,7 @@
 % Please edit documentation in R/appUtils.R
 \name{getAppIdentifier}
 \alias{getAppIdentifier}
-\title{Gets app id based on current deployed state}
+\title{Retrieve App Identifier}
 \usage{
 getAppIdentifier()
 }

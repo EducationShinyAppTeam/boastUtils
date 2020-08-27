@@ -1,9 +1,8 @@
-# db connection
-# conn <- boastUtils::db()
-# https://db.rstudio.com/best-practices/managing-credentials/
-#'@export
+#' Connection to default Apache CoucheDB
+#'
+#' @export
 dbConnect <- function() {
-  config <- boastUtils:::getConfig()
+  config <- boastUtils:::.getConfig()
   
   conn <- Cushion$new(
     host = config$database$host,
@@ -18,8 +17,7 @@ dbConnect <- function() {
   return(conn)
 }
 
-
-# db create / base name off of current app id
+#' Determine which table/document to use based on environment
 initAppStorage <- function(conn) {
   id <- boastUtils:::getAppIdentifier()
   db_name <- NA_character_

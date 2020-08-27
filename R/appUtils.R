@@ -80,35 +80,45 @@ isLocal <- function() {
   return(!nzchar(Sys.getenv("SHINY_PORT")))
 }
 
-#' Returns the working directory set at startup
+#' Retrieve application path
+#' 
+#' Returns the working directory set at startup.
+#' 
+#' Default deployed path is `/srv/connect/apps/<DIRECTORY_NAME>`.
+#' 
 #' @seealso Sys.getenv("PWD") on shinyapps.io
+#' @return path
 #' @export
 getAppRoot <- function() {
   return(Sys.getenv("APP_ROOT"))
 }
 
+#' Retrieve App Identifier
+#' 
 #' Gets app id based on current deployed state
+#' 
 #' @export
 getAppIdentifier <- function() {
+  DESCRIPTION <- file.path(getAppRoot(), "DESCRIPTION")
   id <- NA_character_
   
   # Generate a temp uuid
   temp_uuid <- uuid::UUIDgenerate()
-  # If app is local, check if metadata file exists
-  if(file.exists("DESCRIPTION")) {
+  
+  # Check if metadata file exists
+  if(file.exists(DESCRIPTION)) {
     # Check to see if identifier is stored, if not, store it.
-    DESCRIPTION <- file.path(getAppRoot(), "DESCRIPTION")
     stored_uuid <- read.dcf(DESCRIPTION, fields = "UUID")
     if (!is.na(stored_uuid[1])) {
       id <- stored_uuid
     } else {
-      boastUtils:::setAppIdentifier(temp_uuid)
+      boastUtils:::.setAppIdentifier(temp_uuid)
     }
   } else {
     # Suggest creating it / continue using temp id
     message(
       paste(
-        "DESCRIPTION metadata file not file, consider creating one. See:",
+        "DESCRIPTION metadata file not found, consider creating one. See:",
         "  https://github.com/rstudio/shiny-examples/blob/master/001-hello/DESCRIPTION",
         sep = "\n"  
       )
@@ -119,18 +129,24 @@ getAppIdentifier <- function() {
   return(id)
 }
 
+#' Retrive config file
+#' 
 #' Gets properties set in boastUtils/config.yml
-getConfig <- function() {
+.getConfig <- function() {
   install_path <- find.package("boastUtils")
   conf <- config::get(file = file.path(install_path, "config.yml"))
   return(conf)
 }
 
-#' Writes UUID to App DESCRIPTION file in project root
-setAppIdentifier <- function(uuid) {
+#' Store app identifier
+#' 
+#' Writes Universally Unique ID (UUID) to App DESCRIPTION file in project root.
+#' 
+#' Assumes property does not exist in file already. 
+.setAppIdentifier <- function(uuid) {
   UUID <- as.data.frame(uuid)
   success <- FALSE
-  tryCatch({
+  try({
     APP_ROOT <- getAppRoot()
     if (APP_ROOT != "") {
       DESCRIPTION <- file.path(APP_ROOT, "DESCRIPTION")
@@ -139,8 +155,6 @@ setAppIdentifier <- function(uuid) {
     } else {
       warning("Unable to determine root directory, skipping DESCRIPTION file creation.")
     }
-  }, error = function(err) {
-    warning(err)
   })
   return(success)
 }

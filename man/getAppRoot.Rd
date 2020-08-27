@@ -2,12 +2,18 @@
 % Please edit documentation in R/appUtils.R
 \name{getAppRoot}
 \alias{getAppRoot}
-\title{Returns the working directory set at startup}
+\title{Retrieve application path}
 \usage{
 getAppRoot()
 }
+\value{
+path
+}
 \description{
-Returns the working directory set at startup
+Returns the working directory set at startup.
+}
+\details{
+Default deployed path is \verb{/srv/connect/apps/<DIRECTORY_NAME>}.
 }
 \seealso{
 Sys.getenv("PWD") on shinyapps.io
