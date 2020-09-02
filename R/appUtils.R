@@ -1,6 +1,7 @@
 # Create link to javascript files for package
 .onAttach <- function(...) {
   shiny::addResourcePath("app", system.file("assets/js/", package = "boastUtils"))
+  shiny::addResourcePath("icons", system.file("assets/icons/", package = "boastUtils"))
 }
 
 #' Used to attach scripts to DOM in template.html head

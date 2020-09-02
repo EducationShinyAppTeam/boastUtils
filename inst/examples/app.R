@@ -25,6 +25,7 @@ ui <- dashboardPage(
       tabItem(
         tabName = "Sample",
         h2("Lorem Ipsum"),
+        renderIcon("valid"),
         p("Donec suscipit scelerisque rutrum eros in nam leo purus id,
            dui senectus tellus lacus consequat dictumst condimentum himenaeos pellentesque,
            turpis viverra eu adipiscing etiam aenean risus vel.
