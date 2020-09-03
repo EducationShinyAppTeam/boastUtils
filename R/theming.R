@@ -181,15 +181,18 @@ copyrightInfo <- function() {
 
 #' Icons for Apps
 #'
-#' @param style Icon style \code{[default, valid, partial, invalid]}
+#' @param icon Icon style \code{[default, correct, incorrect, partial]}
+#' @param width Icon width (in pixels)
+#' @param html FALSE to render as shinyUI or TRUE to return html markup \code{[FALSE, TRUE]}
 #'
-#' @return shinyUI
+#' @return <shiny.render.function> or html
 #'
 #' @examples 
-#' renderIcon("valid")
+#' renderIcon("correct")
+#' renderIcon("incorrect", width = 25, html = TRUE)
 #' 
 #' @export
-renderIcon <- function(icon = "default", width = 50){
+renderIcon <- function(icon = "default", width = 36, html = FALSE){
   
   # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
   # NOTE:                                                                                       #
@@ -199,16 +202,19 @@ renderIcon <- function(icon = "default", width = 50){
   
   markup <- ""
   
-  if (icon == "valid") {
-     markup <- img(src = "icons/cross.png", alt = "Success, you are correct", width = width)
-  } else if(icon == "invalid") {
-    markup <- img(src = "icons/check.png", alt = "Sorry, you are incorrect", width = width)
+  if (icon == "correct") {
+     markup <- img(src = "icons/correct.png", alt = "Success, you are correct", width = width)
+  } else if(icon == "incorrect") {
+    markup <- img(src = "icons/incorrect.png", alt = "Sorry, you are incorrect; please check the feedback", width = width)
   } else if(icon == "partial") {
-    markup <- img(src = "icons/partial.png", alt = "Not quite, but close", width = width)
+    markup <- img(src = "icons/partial.png", alt = "You're partially correct; please check the feedback", width = width)
   } else {
     # default
   }
   
-  #renderUI(markup)
-  markup
+  if (!html) {
+    renderUI(markup)
+  } else {
+    return(markup)
+  }
 }

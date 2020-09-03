@@ -4,18 +4,23 @@
 \alias{renderIcon}
 \title{Icons for Apps}
 \usage{
-renderIcon(icon = "default", width = 50)
+renderIcon(icon = "default", width = 36, html = FALSE)
 }
 \arguments{
-\item{style}{Icon style \code{[default, valid, partial, invalid]}}
+\item{icon}{Icon style \code{[default, correct, incorrect, partial]}}
+
+\item{width}{Icon width (in pixels)}
+
+\item{html}{FALSE to render as shinyUI or TRUE to return html markup \code{[FALSE, TRUE]}}
 }
 \value{
-shinyUI
+<shiny.render.function> or html
 }
 \description{
 Icons for Apps
 }
 \examples{
-renderIcon("valid")
+renderIcon("correct")
+renderIcon("incorrect", width = 25, html = TRUE)
 
 }

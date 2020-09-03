@@ -42,6 +42,12 @@ ui <- dashboardPage(
            Fames litora commodo turpis sit efficitur nisl ad curabitur malesuada,
            torquent nascetur lobortis natoque enim consequat nisi."),
         textInput("sample_input", label = "Sample Input", value = "Placeholder"),
+        h2("Icons"),
+        p(
+          uiOutput("sampleIconCorrect", inline = TRUE),
+          uiOutput("sampleIconPartial", inline = TRUE),
+          renderIcon("incorrect", width = 24, html = TRUE)
+        ),
         actionButton("quit", "Quit")
       )
     )
@@ -54,6 +60,9 @@ server <- function(input, output, session) {
   message_for_status(connection$status)
   
   observeEvent(input$quit, stopApp())
+  
+  output$sampleIconCorrect <- renderIcon("correct")
+  output$sampleIconPartial <- renderIcon("partial")
   
   boastUtils:::.renderInputDebugger(session)
 }
