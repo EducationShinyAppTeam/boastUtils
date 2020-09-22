@@ -1,0 +1,15 @@
+default:
+  database:
+    host: 'localhost'
+    transport: 'https'
+    port: NULL
+    user: 'root'
+    pwd: 'root'
+  
+rsconnect:
+  database:
+    host: 'dev.stat.vmhost.psu.edu/couch'
+    transport: 'https'
+    port: NULL
+    user: !expr Sys.getenv("DB_USER")
+    pwd: !expr Sys.getenv("DB_PASSWORD")

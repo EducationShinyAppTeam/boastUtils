@@ -178,3 +178,43 @@ copyrightInfo <- function() {
   
   return(license)
 }
+
+#' Icons for Apps
+#'
+#' @param icon Icon style \code{[default, correct, incorrect, partial]}
+#' @param width Icon width (in pixels)
+#' @param html FALSE to render as shinyUI or TRUE to return html markup \code{[FALSE, TRUE]}
+#'
+#' @return <shiny.render.function> or html
+#'
+#' @examples 
+#' renderIcon("correct")
+#' renderIcon("incorrect", width = 25, html = TRUE)
+#' 
+#' @export
+renderIcon <- function(icon = "default", width = 36, html = FALSE){
+  
+  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+  # NOTE:                                                                                       #
+  #   If we start getting a ton of icons it would be best to use this approach:                 #
+  #   @link{https://github.com/rstudio/fontawesome/blob/master/tools/generate_fa_sysdata.R}     #
+  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+  
+  markup <- ""
+  
+  if (icon == "correct") {
+     markup <- img(src = "icons/correct.png", alt = "Success, you are correct", width = width)
+  } else if(icon == "incorrect") {
+    markup <- img(src = "icons/incorrect.png", alt = "Sorry, you are incorrect; please check the feedback", width = width)
+  } else if(icon == "partial") {
+    markup <- img(src = "icons/partial.png", alt = "You're partially correct; please check the feedback", width = width)
+  } else {
+    # default
+  }
+  
+  if (!html) {
+    renderUI(markup)
+  } else {
+    return(markup)
+  }
+}
