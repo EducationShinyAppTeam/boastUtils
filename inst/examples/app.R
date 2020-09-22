@@ -58,11 +58,33 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
   message("\nrLocker status")
   message_for_status(connection$status)
+  message("\n")
   
   observeEvent(input$quit, stopApp())
   
   output$sampleIconCorrect <- renderIcon("correct")
   output$sampleIconPartial <- renderIcon("partial")
+  
+  # Note: isolate() is not normally needed.
+  isolate({
+    stmt <- boastUtils::generateStatement(
+      session,
+      verb = "answered",
+      object = "SAMPLE_QUESTION_ID",
+      description = "SAMPLE_QUESTION_OUTPUT",
+      interactionType = "choice",
+      response = "SAMPLE_RESPONSE",
+      success = TRUE,
+      score = list(
+        min = 0,
+        max = 100,
+        raw = 35,
+        scaled = 0.35
+      ),
+      completion = FALSE
+    )
+    message(paste("Sample xAPI data: \n", stmt))
+  })
   
   boastUtils:::.renderInputDebugger(session)
 }
