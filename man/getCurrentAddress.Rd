@@ -2,10 +2,18 @@
 % Please edit documentation in R/appUtils.R
 \name{getCurrentAddress}
 \alias{getCurrentAddress}
-\title{Gets page address from the current session}
+\title{getCurrentAddress}
 \usage{
 getCurrentAddress(session)
 }
+\value{
+url
+}
 \description{
-Gets page address from the current session
+Returns current page address in session$clientData as validated url.
+}
+\examples{
+> getCurrentAddress(session)
+`[1] "https://psu-eberly.shinyapps.io/Sample_App/#shiny-tab-challenge"`
+
 }

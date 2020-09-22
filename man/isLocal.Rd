@@ -2,10 +2,14 @@
 % Please edit documentation in R/appUtils.R
 \name{isLocal}
 \alias{isLocal}
-\title{Check to see if current environment is local or shinyapps.io}
+\title{isLocal}
 \usage{
 isLocal()
 }
+\value{
+boolean
+}
 \description{
-Check to see if current environment is local or shinyapps.io
+Check to see if current environment is local or shinyapps.io.
+Returns \code{TRUE} if local; \code{FALSE} if shinyapps.io.
 }
