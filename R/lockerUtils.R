@@ -123,7 +123,7 @@ generateStatement <- function(
   success = NA,
   score = list(),
   completion = NA,
-  extensions = NULL) {
+  extensions = list()) {
   
   # Assumes input has corresponding DOM id to anchor to
   if (is.na(object)) {
@@ -163,8 +163,8 @@ generateStatement <- function(
     stmt$result$completion <- completion
   }
   
-  if (!is.null(extensions)) {
-    stmt$result["extensions"] <- list(
+  if (length(extensions) > 0) {
+    stmt$result$extensions <- list(
       ref = extensions$ref,
       value = extensions$value
     )
