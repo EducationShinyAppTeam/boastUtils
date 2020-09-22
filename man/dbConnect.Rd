@@ -7,5 +7,5 @@
 dbConnect()
 }
 \description{
-Connection to default Apache CoucheDB
+export
 }

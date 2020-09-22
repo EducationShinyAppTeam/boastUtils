@@ -1,7 +1,9 @@
 #' Connection to default Apache CoucheDB
 #'
-#' @export
+#' export
 dbConnect <- function() {
+  warning("dbConnect is in pre-release phase, use at your own risk.")
+  
   config <- boastUtils:::.getConfig()
   
   conn <- Cushion$new(

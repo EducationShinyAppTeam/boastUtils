@@ -3,7 +3,6 @@
 export(boastApp)
 export(boastPalette)
 export(copyrightInfo)
-export(dbConnect)
 export(generateStatement)
 export(getAppIdentifier)
 export(getAppRoot)
