@@ -80,25 +80,29 @@ getLockerConfig <- function() {
 
 #' App cleanup functions
 .bindSessionEnd <- function(session) {
-  onStop(function() {
+  onSessionEnded(function() {
     isolate({
-      response <- httr::POST(
-        url = "https://learning-locker.stat.vmhost.psu.edu/data/xAPI/statements", 
-        config = list(
-          add_headers(
-            "Auth" = getLockerConfig()$auth,
-            "Content-Type" = "application/json",
-            "X-Experience-API-Version" = "1.0.1"
+      # Ignore curl::curl_fetch_memory warnings caused by exiting too soon 
+      suppressWarnings({
+        # Try to log when a user ends their session
+        response <- httr::POST(
+          url = "https://learning-locker.stat.vmhost.psu.edu/data/xAPI/statements", 
+          config = list(
+            add_headers(
+              "Auth" = getLockerConfig()$auth,
+              "Content-Type" = "application/json",
+              "X-Experience-API-Version" = "1.0.1"
+            ),
+            verbose = TRUE
           ),
-          verbose = TRUE
-        ),
-        body = generateStatement(
-          session,
-          verb = "exited",
-          description = "Session has ended."
-        ),
-        encode = "json" 
-      )
+          body = generateStatement(
+            session,
+            verb = "exited",
+            description = "Session has ended."
+          ),
+          encode = "json" 
+        )
+      })
     })
   })
 }
