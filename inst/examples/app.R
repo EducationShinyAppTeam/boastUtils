@@ -60,9 +60,6 @@ server <- function(input, output, session) {
   message_for_status(connection$status)
   message("\n")
   
-  print(paste("SERVER-OPTIONS:", getOption("boastUtils-config")$agent))
-  print(paste("SERVER-CONFIG:", getLockerConfig()$agent))
-  
   observeEvent(input$quit, stopApp())
   
   output$sampleIconCorrect <- renderIcon("correct")
@@ -86,11 +83,8 @@ server <- function(input, output, session) {
       ),
       completion = FALSE
     )
-    # message(paste("Sample xAPI data: \n", stmt))
+    message(paste("Sample xAPI data: \n", stmt))
   })
-  
-  # print(Sys.getenv("SHINY_PORT"))
-  # print(isLocal())
   
   boastUtils:::.renderInputDebugger(session)
 }

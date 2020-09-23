@@ -80,6 +80,7 @@ scripts <- function() {
     agent = .agent
   )
   
+  # Store config in global options()
   options("boastUtils-config" = .lockerConfig)
   
   # Initialize Learning Locker connection

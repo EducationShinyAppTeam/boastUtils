@@ -136,9 +136,6 @@ generateStatement <- function(
   
   agent <- getLockerConfig()$agent
   
-  print(paste("PACKAGE-OPTIONS: ", getOption("boastUtils-config")$agent))
-  print(paste("PACKAGE-CONFIG: ", agent))
-  
   stmt <- list(
     agent = agent,
     verb =  verb,
