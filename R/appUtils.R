@@ -121,7 +121,6 @@ getCurrentAddress <- function(session) {
 #' @export
 isLocal <- function() {
   status <- !nzchar(Sys.getenv("SHINY_PORT"))
-  print(paste("isLocal:", status))
   return(status)
 }
 
