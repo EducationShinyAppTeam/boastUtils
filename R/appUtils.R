@@ -57,6 +57,7 @@ scripts <- function() {
   Sys.setenv("APP_NAME" = APP_NAME)
   Sys.setenv("APP_ROOT" = APP_ROOT)
   
+  # Store connection details
   connection <- boastUtils:::.boastConnect(session)
   
   boastUtils:::.bindInputEvents(session)
@@ -81,7 +82,7 @@ scripts <- function() {
   )
   
   # Store config in global options()
-  options("boastUtils-config" = .lockerConfig)
+  # options("boastUtils-config" = .lockerConfig)
   
   # Initialize Learning Locker connection
   connection <- rlocker::connect(session, .lockerConfig)

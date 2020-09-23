@@ -7,8 +7,21 @@
 getLockerConfig()
 }
 \value{
-session$lockerConfig
+\preformatted{list(
+  base_url,
+  auth,
+  agent = list(
+    name,
+    mbox,
+    objectType
+  ),
+  language
+)
+}
 }
 \description{
-Return Learning Locker configuration.
+Return Learning Locker configuration for current session.
+}
+\seealso{
+\link[rlocker]{get_locker_config()}
 }

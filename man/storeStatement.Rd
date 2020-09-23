@@ -2,10 +2,10 @@
 % Please edit documentation in R/lockerUtils.R
 \name{storeStatement}
 \alias{storeStatement}
-\title{Store xAPI Statement in configured Locker}
+\title{storeStatement}
 \usage{
 storeStatement(session, statement = NA)
 }
 \description{
-Store xAPI Statement in configured Locker
+Store xAPI Statement in configured Store.
 }

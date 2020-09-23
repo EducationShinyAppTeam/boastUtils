@@ -1,4 +1,6 @@
-# Return auth based on current hosting environment
+#' .getAuth
+#' 
+#' Return auth based on current hosting environment
 .getAuth <- function() {
   
   auth <- NA_character_
@@ -17,14 +19,27 @@
 
 #' getLockerConfig
 #' 
-#' Return Learning Locker configuration.
+#' Return Learning Locker configuration for current session.
 #' 
 #' @return 
-#' session$lockerConfig
+#' ```
+#' list(
+#'   base_url,
+#'   auth,
+#'   agent = list(
+#'     name,
+#'     mbox,
+#'     objectType
+#'   ),
+#'   language
+#' )
+#' ```
+#' 
+#' @seealso \link[rlocker]{get_locker_config()}
 #' 
 #' @export
 getLockerConfig <- function() {
-  return(getOption("boastUtils-config"))
+  return(getOption("locker_config"))
 }
 
 #' Learning Locker Statement Generation
@@ -184,7 +199,10 @@ generateStatement <- function(
   return(statement)   
 }
 
-#' Store xAPI Statement in configured Locker
+#' storeStatement
+#' 
+#' Store xAPI Statement in configured Store.
+#' 
 #' @export
 storeStatement <- function(session, statement = NA) {
   
