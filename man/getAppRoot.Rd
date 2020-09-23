@@ -17,7 +17,7 @@ Default deployed path is \verb{/srv/connect/apps/<DIRECTORY_NAME>}.
 }
 \examples{
 > getAppRoot()
-`[1] "/srv/connect/apps/Sample_App"`
+[1] "/srv/connect/apps/Sample_App"
 
 }
 \seealso{
