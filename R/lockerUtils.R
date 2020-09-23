@@ -67,7 +67,7 @@ getLockerConfig <- function() {
 
 #' App cleanup functions
 .bindSessionEnd <- function(session) {
-  onSessionEnded(function() {
+  onStop(function() {
     isolate({
       response <- httr::POST(
         url = "https://learning-locker.stat.vmhost.psu.edu/data/xAPI/statements", 
