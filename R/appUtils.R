@@ -1,10 +1,15 @@
-# Create link to javascript files for package
+#' .onAttach
+#' 
+#' Create link to html assets for package usage.
 .onAttach <- function(...) {
   shiny::addResourcePath("app", system.file("assets/js/", package = "boastUtils"))
   shiny::addResourcePath("icons", system.file("assets/icons/", package = "boastUtils"))
 }
 
-#' Used to attach scripts to DOM in template.html head
+#' scripts
+#' 
+#' Used to attach scripts to DOM in template.html head.
+#' 
 #'@export
 scripts <- function() {
   # htmlDependency js and css will be used in other functions with attachDependency
@@ -19,9 +24,13 @@ scripts <- function() {
   htmltools::attachDependencies(htmltools::tags$head(), dependencies, append = TRUE)
 }
 
-# Injects config into the start of the server function
+#' .injectBoastConfig
+#' 
+#' Injects boastApp configuration into the head of the default shinyApp server function; 
+#' occurs **before** shinyApp::onStart(). This is important to setup environment data so
+#' that it can be used within the default app.R/server.R server function.
 .injectBoastConfig <- function(server) {
-
+  
   body <- as.list(body(server))
   
   call <- as.call(
@@ -35,6 +44,10 @@ scripts <- function() {
   return(server)
 }
 
+#' .boastInit
+#' 
+#' Initializes shinyApp state with BOAST specific utilities and
+#' environment variables.
 .boastInit <- function(session) {
   
   # Setup environment variables
@@ -52,6 +65,9 @@ scripts <- function() {
   return(connection)
 }
 
+#' .boastConnect
+#' 
+#' Setup asynchronous connection to Learning Record Store (LRS).
 .boastConnect <- function(session) {
   
   # Initialize Learning Locker connection
@@ -60,32 +76,64 @@ scripts <- function() {
   return(connection)
 }
 
-#' Gets page address from the current session
+#' getCurrentAddress
+#' 
+#' Returns current page address in session$clientData as validated url.
+#' 
+#' @usage 
+#' getCurrentAddress(session)
+#' 
+#' @examples
+#' > getCurrentAddress(session)
+#' [1] "https://psu-eberly.shinyapps.io/Sample_App/#shiny-tab-challenge"
+#' 
+#' @return url
+#' 
 #'@export
 getCurrentAddress <- function(session) {
   port <- ifelse(is.null(session$clientData$url_port), NULL, paste0(":", session$clientData$url_port))
   path <- ifelse(is.null(port), sub("/$", "", session$clientData$url_pathname), session$clientData$url_pathname)
   
-  return(paste0(
-    session$clientData$url_protocol, "//",
-    session$clientData$url_hostname,
-    port,
-    path,
-    session$clientData$url_search
-  ))
+  url <- httr::build_url(
+    httr::parse_url(
+      paste0(
+        session$clientData$url_protocol, "//",
+        session$clientData$url_hostname,
+        port,
+        path,
+        session$clientData$url_search
+      )
+    )
+  )
+  
+  return(url)
 }
 
-#' Check to see if current environment is local or shinyapps.io
+#' isLocal
+#' 
+#' Check to see if current environment is local or shinyapps.io.
+#' Returns `TRUE` if local; `FALSE` if shinyapps.io.
+#' 
+#' @usage isLocal()
+#' 
+#' @return boolean
+#' 
 #' @export
 isLocal <- function() {
   return(!nzchar(Sys.getenv("SHINY_PORT")))
 }
 
-#' Retrieve application path
+#' getAppRoot
 #' 
 #' Returns the working directory set at startup.
 #' 
 #' Default deployed path is `/srv/connect/apps/<DIRECTORY_NAME>`.
+#' 
+#' @usage getAppRoot()
+#' 
+#' @examples
+#' > getAppRoot()
+#' [1] "/srv/connect/apps/Sample_App"
 #' 
 #' @seealso Sys.getenv("PWD") on shinyapps.io
 #' @return path
