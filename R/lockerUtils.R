@@ -1,6 +1,6 @@
 # Return auth based on current hosting environment
 .getAuth <- function() {
-  # equiv shiny:::inShinyServer
+  
   auth <- NA_character_
   
   # Separate local and deployed app xAPI Statements in different Stores.
@@ -15,20 +15,16 @@
   return(auth)
 }
 
-.auth <- .getAuth()
-.agent <- rlocker::createAgent()
-
-# Setup Learning Locker configuration
-.lockerConfig <- list(
-  base_url = "https://learning-locker.stat.vmhost.psu.edu/",
-  auth = .auth,
-  agent = .agent
-)
-
-# Return Learning Locker configuration
-#'@export
+#' getLockerConfig
+#' 
+#' Return Learning Locker configuration.
+#' 
+#' @return 
+#' session$lockerConfig
+#' 
+#' @export
 getLockerConfig <- function() {
-  return(.lockerConfig)
+  return(getOption("boastUtils-config"))
 }
 
 #' Learning Locker Statement Generation
@@ -75,7 +71,7 @@ getLockerConfig <- function() {
         url = "https://learning-locker.stat.vmhost.psu.edu/data/xAPI/statements", 
         config = list(
           add_headers(
-            "Auth" = .lockerConfig$auth,
+            "Auth" = getLockerConfig()$auth,
             "Content-Type" = "application/json",
             "X-Experience-API-Version" = "1.0.1"
           ),
@@ -138,8 +134,13 @@ generateStatement <- function(
     object <- paste0("#", object)
   }
   
+  agent <- getLockerConfig()$agent
+  
+  print(paste("PACKAGE-OPTIONS: ", getOption("boastUtils-config")$agent))
+  print(paste("PACKAGE-CONFIG: ", agent))
+  
   stmt <- list(
-    agent = .lockerConfig$agent,
+    agent = agent,
     verb =  verb,
     object = list(
       id = paste0(boastUtils::getCurrentAddress(session), object),

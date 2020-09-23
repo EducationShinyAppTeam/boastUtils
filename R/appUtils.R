@@ -70,8 +70,20 @@ scripts <- function() {
 #' Setup asynchronous connection to Learning Record Store (LRS).
 .boastConnect <- function(session) {
   
+  # Setup Learning Locker configuration
+  .auth <- .getAuth()
+  .agent <- rlocker::createAgent()
+  
+  .lockerConfig <- list(
+    base_url = "https://learning-locker.stat.vmhost.psu.edu/",
+    auth = .auth,
+    agent = .agent
+  )
+  
+  options("boastUtils-config" = .lockerConfig)
+  
   # Initialize Learning Locker connection
-  connection <- rlocker::connect(session, getLockerConfig())
+  connection <- rlocker::connect(session, .lockerConfig)
 
   return(connection)
 }
