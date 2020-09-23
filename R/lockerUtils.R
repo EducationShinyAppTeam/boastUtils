@@ -67,14 +67,17 @@ getLockerConfig <- function() {
 
 #' App cleanup functions
 .bindSessionEnd <- function(session) {
-  onSessionEnded(function() {
+  onStop(function() {
     isolate({
       response <- httr::POST(
         url = "https://learning-locker.stat.vmhost.psu.edu/data/xAPI/statements", 
-        config = add_headers(
-          "Auth" = .lockerConfig$auth,
-          "Content-Type" = "application/json",
-          "X-Experience-API-Version" = "1.0.1"
+        config = list(
+          add_headers(
+            "Auth" = .lockerConfig$auth,
+            "Content-Type" = "application/json",
+            "X-Experience-API-Version" = "1.0.1"
+          ),
+          verbose = TRUE
         ),
         body = generateStatement(
           session,
@@ -90,6 +93,28 @@ getLockerConfig <- function() {
 #' Generate Statement
 #' 
 #' Create an xAPI Statement using rLocker
+#' 
+#' @examples 
+#' generateStatement(
+#'   session,
+#'   verb = "answered",
+#'   object = "SAMPLE_QUESTION_ID",
+#'   description = "SAMPLE_QUESTION_OUTPUT",
+#'   interactionType = "choice",
+#'   response = "SAMPLE_RESPONSE",
+#'   success = c(TRUE, FALSE),
+#'   score = list(
+#'     min = 0,
+#'     max = 100,
+#'     raw = 35,
+#'     scaled = 0.35
+#'   ),
+#'   completion = FALSE
+#' )
+#' 
+#' @seealso \link[rlocker]{getVerbList()}
+#' @seealso \link[rlocker]{getInteractionTypes()}
+#' 
 #' @export
 generateStatement <- function(
   session,
@@ -99,11 +124,13 @@ generateStatement <- function(
   interactionType = NA,
   response = NULL,
   success = NA,
+  score = list(),
   completion = NA,
-  extensions = NULL) {
+  extensions = list()) {
   
   # Assumes input has corresponding DOM id to anchor to
   if (is.na(object)) {
+    # FIXME: This results in shiny-tab-NA; search for current tab in input$tabs.
     object <- paste0("#shiny-tab-", object)
   } else {
     object <- paste0("#", object)
@@ -128,6 +155,10 @@ generateStatement <- function(
     stmt$object$interactionType <- interactionType
   }
   
+  if (length(score) > 0) {
+    stmt$result$score <- score
+  }
+  
   if (!is.na(success)) {
     stmt$result$success <- success
   }
@@ -136,8 +167,8 @@ generateStatement <- function(
     stmt$result$completion <- completion
   }
   
-  if (!is.null(extensions)) {
-    stmt$result["extensions"] <- list(
+  if (length(extensions) > 0) {
+    stmt$result$extensions <- list(
       ref = extensions$ref,
       value = extensions$value
     )
