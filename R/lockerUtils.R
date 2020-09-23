@@ -71,10 +71,13 @@ getLockerConfig <- function() {
     isolate({
       response <- httr::POST(
         url = "https://learning-locker.stat.vmhost.psu.edu/data/xAPI/statements", 
-        config = add_headers(
-          "Auth" = .lockerConfig$auth,
-          "Content-Type" = "application/json",
-          "X-Experience-API-Version" = "1.0.1"
+        config = list(
+          add_headers(
+            "Auth" = .lockerConfig$auth,
+            "Content-Type" = "application/json",
+            "X-Experience-API-Version" = "1.0.1"
+          ),
+          verbose = TRUE
         ),
         body = generateStatement(
           session,
@@ -127,6 +130,7 @@ generateStatement <- function(
   
   # Assumes input has corresponding DOM id to anchor to
   if (is.na(object)) {
+    # FIXME: This results in shiny-tab-NA; search for current tab in input$tabs.
     object <- paste0("#shiny-tab-", object)
   } else {
     object <- paste0("#", object)

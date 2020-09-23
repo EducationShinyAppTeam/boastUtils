@@ -14,7 +14,7 @@ generateStatement(
   success = NA,
   score = list(),
   completion = NA,
-  extensions = NULL
+  extensions = list()
 )
 }
 \description{
