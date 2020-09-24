@@ -81,9 +81,18 @@ server <- function(input, output, session) {
         raw = 35,
         scaled = 0.35
       ),
-      completion = FALSE
+      completion = FALSE,
+      extensions = list(
+        ref = "https://w3id.org/xapi/cmi5/result/extensions/progress",
+        value = "100"
+      )
     )
     message(paste("Sample xAPI data: \n", stmt))
+  })
+  
+  isolate({
+    print(session$input$tabs)
+    print(getCurrentAddress(session))
   })
   
   boastUtils:::.renderInputDebugger(session)

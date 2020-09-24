@@ -1,10 +1,14 @@
-# Return auth based on current hosting environment
+#' .getAuth
+#' 
+#' Return auth based on current hosting environment
 .getAuth <- function() {
-  # equiv shiny:::inShinyServer
+  
   auth <- NA_character_
   
-  # Separate xAPI Statements in a different Store
-  if(isLocal()) {
+  # Separate local and deployed app xAPI Statements in different Stores.
+  local <- isLocal()
+  
+  if(local) {
     auth <- "Basic NmIwZjAzMGE3ODJmYWY3ZGE0NDhjNGJkZjVkNTEwYTFkODQzNjM3NDoyNmU1MThjNTI2M2ZiZWEwMDIyM2YwYmIwZjM3OThmNTc2NWZiZGU5"
   } else {
     auth <- "Basic YWVlMjQ2ZDJmMzk2OWMwYTk0NTY3ZTQ0ZThiMDU3NDI3MjhhNWFiYjpmYWU4NDkwNTVlMzNiMDEyNzY0OGIyOGI5YzliZjI2NjMyYzFhYzJk"
@@ -13,20 +17,29 @@
   return(auth)
 }
 
-.auth <- .getAuth()
-.agent <- rlocker::createAgent()
-
-# Setup Learning Locker configuration
-.lockerConfig <- list(
-  base_url = "https://learning-locker.stat.vmhost.psu.edu/",
-  auth = .auth,
-  agent = .agent
-)
-
-# Return Learning Locker configuration
-#'@export
+#' getLockerConfig
+#' 
+#' Return Learning Locker configuration for current session.
+#' 
+#' @return 
+#' ```
+#' list(
+#'   base_url,
+#'   auth,
+#'   agent = list(
+#'     name,
+#'     mbox,
+#'     objectType
+#'   ),
+#'   language
+#' )
+#' ```
+#' 
+#' @seealso \link[rlocker]{get_locker_config()}
+#' 
+#' @export
 getLockerConfig <- function() {
-  return(.lockerConfig)
+  return(getOption("locker_config"))
 }
 
 #' Learning Locker Statement Generation
@@ -67,25 +80,29 @@ getLockerConfig <- function() {
 
 #' App cleanup functions
 .bindSessionEnd <- function(session) {
-  onStop(function() {
+  onSessionEnded(function() {
     isolate({
-      response <- httr::POST(
-        url = "https://learning-locker.stat.vmhost.psu.edu/data/xAPI/statements", 
-        config = list(
-          add_headers(
-            "Auth" = .lockerConfig$auth,
-            "Content-Type" = "application/json",
-            "X-Experience-API-Version" = "1.0.1"
+      # Ignore curl::curl_fetch_memory warnings caused by exiting too soon 
+      suppressWarnings({
+        # Try to log when a user ends their session
+        response <- httr::POST(
+          url = "https://learning-locker.stat.vmhost.psu.edu/data/xAPI/statements", 
+          config = list(
+            add_headers(
+              "Auth" = getLockerConfig()$auth,
+              "Content-Type" = "application/json",
+              "X-Experience-API-Version" = "1.0.1"
+            ),
+            verbose = TRUE
           ),
-          verbose = TRUE
-        ),
-        body = generateStatement(
-          session,
-          verb = "exited",
-          description = "Session has ended."
-        ),
-        encode = "json" 
-      )
+          body = generateStatement(
+            session,
+            verb = "exited",
+            description = "Session has ended."
+          ),
+          encode = "json" 
+        )
+      })
     })
   })
 }
@@ -130,14 +147,21 @@ generateStatement <- function(
   
   # Assumes input has corresponding DOM id to anchor to
   if (is.na(object)) {
-    # FIXME: This results in shiny-tab-NA; search for current tab in input$tabs.
+    # Search for current tab in `input$tabs`.
+    # May result in `shiny-tab-NA` if using unconventional naming / app structure. 
+    tab <- session$input$tabs
+    if(!is.na(tab)){
+      object <- tolower(tab)
+    }
     object <- paste0("#shiny-tab-", object)
   } else {
     object <- paste0("#", object)
   }
   
+  agent <- getLockerConfig()$agent
+  
   stmt <- list(
-    agent = .lockerConfig$agent,
+    agent = agent,
     verb =  verb,
     object = list(
       id = paste0(boastUtils::getCurrentAddress(session), object),
@@ -168,13 +192,10 @@ generateStatement <- function(
   }
   
   if (length(extensions) > 0) {
-    stmt$result$extensions <- list(
-      ref = extensions$ref,
-      value = extensions$value
-    )
+    stmt$result$extensions <- extensions
   }
   
-  # If result object is still empty remove it
+  # If result object is still empty remove it from the output.
   if (!length(stmt$result)) {
     stmt[["result"]] <- NULL
   }
@@ -184,7 +205,10 @@ generateStatement <- function(
   return(statement)   
 }
 
-#' Store xAPI Statement in configured Locker
+#' storeStatement
+#' 
+#' Store xAPI Statement in configured Store.
+#' 
 #' @export
 storeStatement <- function(session, statement = NA) {
   
