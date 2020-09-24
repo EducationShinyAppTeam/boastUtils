@@ -147,7 +147,12 @@ generateStatement <- function(
   
   # Assumes input has corresponding DOM id to anchor to
   if (is.na(object)) {
-    # FIXME: This results in shiny-tab-NA; search for current tab in input$tabs.
+    # Search for current tab in `input$tabs`.
+    # May result in `shiny-tab-NA` if using unconventional naming / app structure. 
+    tab <- session$input$tabs
+    if(!is.na(tab)){
+      object <- tolower(tab)
+    }
     object <- paste0("#shiny-tab-", object)
   } else {
     object <- paste0("#", object)
@@ -187,13 +192,10 @@ generateStatement <- function(
   }
   
   if (length(extensions) > 0) {
-    stmt$result$extensions <- list(
-      ref = extensions$ref,
-      value = extensions$value
-    )
+    stmt$result$extensions <- extensions
   }
   
-  # If result object is still empty remove it
+  # If result object is still empty remove it from the output.
   if (!length(stmt$result)) {
     stmt[["result"]] <- NULL
   }
