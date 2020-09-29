@@ -26,6 +26,7 @@ ui <- dashboardPage(
         tabName = "Sample",
         h2("Lorem Ipsum"),
         renderIcon("valid"),
+        tags$script('$(document).ready(function(){ $("input").on("focus", function(e){ Shiny.setInputValue("focusedElement", e.target.id);}); }); '),
         p("Donec suscipit scelerisque rutrum eros in nam leo purus id,
            dui senectus tellus lacus consequat dictumst condimentum himenaeos pellentesque,
            turpis viverra eu adipiscing etiam aenean risus vel.
@@ -48,6 +49,9 @@ ui <- dashboardPage(
           uiOutput("sampleIconPartial", inline = TRUE),
           renderIcon("incorrect", width = 24, html = TRUE)
         ),
+        p(
+          textOutput("output1")
+        ),
         actionButton("quit", "Quit")
       )
     )
@@ -56,6 +60,9 @@ ui <- dashboardPage(
 
 # Define server logic required
 server <- function(input, output, session) {
+  
+  output$output1 <- renderText({ input$focusedElement })
+  
   message("\nrLocker status")
   message_for_status(connection$status)
   message("\n")
@@ -87,12 +94,20 @@ server <- function(input, output, session) {
         value = "100"
       )
     )
-    message(paste("Sample xAPI data: \n", stmt))
+    #message(paste("Sample xAPI data: \n", stmt))
   })
   
   isolate({
-    print(session$input$tabs)
-    print(getCurrentAddress(session))
+    print(all.vars(session$input$tabs))
+  })
+  
+  observe({
+    #print(session$manageInputs(session$input))
+  })
+  
+  observeEvent(session$sendInsertTab, function(...) {
+    print("Tab")
+    print(...)
   })
   
   boastUtils:::.renderInputDebugger(session)
