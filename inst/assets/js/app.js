@@ -24,18 +24,27 @@ $(document).on('shiny:value', function(event) {
 function imageExpansion(node) {
   let parent = node.parentNode;
 	let button = document.createElement('button');
-		button.innerHTML = '<i class=\"fa fa-search\">&nbsp;</i>';
+		button.innerHTML = '<i class="far fa fa-search">&nbsp;</i>';
 		button.title = 'Click to Expand';
+		button.setAttribute('aria-expanded', "false");
+		button.classList.add("expand-img-btn");
 		button.addEventListener('click', function(){
 			node.classList.toggle('expanded');
+			if(button.getAttribute('aria-expanded') === "true") {
+			  button.setAttribute('aria-expanded', "false"); 
+			} else {
+			  button.setAttribute('aria-expanded', "true");
+			}
 		});
 		node.addEventListener('click', function() {
 			node.classList.remove('expanded');
+			button.setAttribute('aria-expanded', "false");
 		});
 		parent.addEventListener('keydown', function(event) {
 		  event = event || window.event;
       if ('key' in event && (event.key === 'Escape' || event.key === 'Esc')) {
           node.classList.remove('expanded');
+          button.setAttribute('aria-expanded', "false");
       }
     });
 	parent.appendChild(button);
