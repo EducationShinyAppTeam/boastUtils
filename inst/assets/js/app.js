@@ -13,7 +13,7 @@ $('.box .btn-box-tool').on('click', function(e){
 $(document).on('shiny:value', function(event) {
   event.target.addEventListener('DOMNodeInserted', function(e){
    if(typeof(e.target.querySelectorAll) != 'undefined'){
-    let nodes = e.target.querySelectorAll('img.expandable');
+    let nodes = e.target.querySelectorAll('img.expandable:not([draggable])');
     if(nodes.length) {
       Array.from(nodes).forEach(imageExpansion);
     }

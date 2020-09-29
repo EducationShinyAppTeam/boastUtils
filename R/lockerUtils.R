@@ -54,7 +54,7 @@ getLockerConfig <- function() {
       observeEvent(inputs[[input]], {
         stmt <- NA
         
-        if (input == "tabs" || input == "tab") {
+        if (input == "tabs" || input == "tab" || input == "page" || input == "pages") {
           stmt <- generateStatement(
             session,
             verb = "experienced",
@@ -147,11 +147,14 @@ generateStatement <- function(
   
   # Assumes input has corresponding DOM id to anchor to
   if (is.na(object)) {
-    # Search for current tab in `input$tabs`.
+    # Search for current tab in `input$pages`.
     # May result in `shiny-tab-NA` if using unconventional naming / app structure. 
-    tab <- session$input$tabs
-    if(!is.na(tab)){
-      object <- tolower(tab)
+    page <- session$input$pages
+    if(!is.null(page)){
+      object <- tolower(page)
+    } else if(is.null(page) & !is.null(session$input$tabs)) {
+      message("Deprecation: dashboardSidebar(sidebarMenu(id)) should be updated to use `pages` if currently using the old naming convention `tabs`.")
+      object <- tolower(session$input$tabs)  
     }
     object <- paste0("#shiny-tab-", object)
   } else {
