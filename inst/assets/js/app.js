@@ -37,6 +37,7 @@ function imageExpansion(node) {
 			  button.focus();
 			}
 		});
+		node.draggable = false;
 		node.addEventListener('click', function() {
 			node.classList.remove('expanded');
 			button.setAttribute('aria-expanded', "false");
