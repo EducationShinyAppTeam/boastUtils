@@ -1,8 +1,8 @@
 Package: boastUtils
 Type: Package
 Title: BOAST Utilities
-Version: 0.1.6.6
-Date: 2020-09-24
+Version: 0.1.7
+Date: 2020-09-29
 Authors@R: c(
   person("Robert", "Carey", email = "rpc5102@psu.edu", role = c("aut", "cre")),
   person("Neil", "Hatfield", email = "njh5464@psu.edu", role = "aut")
