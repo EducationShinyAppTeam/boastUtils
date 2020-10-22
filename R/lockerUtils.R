@@ -145,67 +145,71 @@ generateStatement <- function(
   completion = NA,
   extensions = list()) {
   
-  # Assumes input has corresponding DOM id to anchor to
-  if (is.na(object)) {
-    # Search for current tab in `input$pages`.
-    # May result in `shiny-tab-NA` if using unconventional naming / app structure. 
-    page <- session$input$pages
-    if(!is.null(page)){
-      object <- tolower(page)
-    } else if(is.null(page) & !is.null(session$input$tabs)) {
-      message("Deprecation: dashboardSidebar(sidebarMenu(id)) should be updated to use `pages` if currently using the old naming convention `tabs`.")
-      object <- tolower(session$input$tabs)  
+  tryCatch({
+    # Assumes input has corresponding DOM id to anchor to
+    if (is.na(object)) {
+      # Search for current tab in `input$pages`.
+      # May result in `shiny-tab-NA` if using unconventional naming / app structure. 
+      page <- session$input$pages
+      if(!is.null(page)){
+        object <- tolower(page)
+      } else if(is.null(page) & !is.null(session$input$tabs)) {
+        message("Deprecation: dashboardSidebar(sidebarMenu(id)) should be updated to use `pages` if currently using the old naming convention `tabs`.")
+        object <- tolower(session$input$tabs)  
+      }
+      object <- paste0("#shiny-tab-", object)
+    } else {
+      object <- paste0("#", object)
     }
-    object <- paste0("#shiny-tab-", object)
-  } else {
-    object <- paste0("#", object)
-  }
-  
-  agent <- getLockerConfig()$agent
-  
-  stmt <- list(
-    agent = agent,
-    verb =  verb,
-    object = list(
-      id = paste0(boastUtils::getCurrentAddress(session), object),
-      name = paste0(APP_TITLE),
-      description = description
-    ),
-    result = list()
-  )
-  
-  if (!is.null(response)) {
-    stmt$result$response <- paste(response)
-  }
-  
-  if (!is.na(interactionType)) {
-    stmt$object$interactionType <- interactionType
-  }
-  
-  if (length(score) > 0) {
-    stmt$result$score <- score
-  }
-  
-  if (!is.na(success)) {
-    stmt$result$success <- success
-  }
-  
-  if (!is.na(completion)) {
-    stmt$result$completion <- completion
-  }
-  
-  if (length(extensions) > 0) {
-    stmt$result$extensions <- extensions
-  }
-  
-  # If result object is still empty remove it from the output.
-  if (!length(stmt$result)) {
-    stmt[["result"]] <- NULL
-  }
-  
-  statement <- rlocker::createStatement(stmt)
-  
-  return(statement)   
+    
+    agent <- getLockerConfig()$agent
+    
+    stmt <- list(
+      agent = agent,
+      verb =  verb,
+      object = list(
+        id = paste0(boastUtils::getCurrentAddress(session), object),
+        name = paste0(APP_TITLE),
+        description = description
+      ),
+      result = list()
+    )
+    
+    if (!is.null(response)) {
+      stmt$result$response <- paste(response)
+    }
+    
+    if (!is.na(interactionType)) {
+      stmt$object$interactionType <- interactionType
+    }
+    
+    if (length(score) > 0) {
+      stmt$result$score <- score
+    }
+    
+    if (!is.na(success)) {
+      stmt$result$success <- success
+    }
+    
+    if (!is.na(completion)) {
+      stmt$result$completion <- completion
+    }
+    
+    if (length(extensions) > 0) {
+      stmt$result$extensions <- extensions
+    }
+    
+    # If result object is still empty remove it from the output.
+    if (!length(stmt$result)) {
+      stmt[["result"]] <- NULL
+    }
+    
+    statement <- rlocker::createStatement(stmt)
+    
+    return(statement)
+  }, error = function(e) {
+    warning("Unable to create xAPI statement.", call. = FALSE)
+  })
 }
 
 #' storeStatement
@@ -213,11 +217,17 @@ generateStatement <- function(
 #' Store xAPI Statement in configured Store.
 #' 
 #' @export
-storeStatement <- function(session, statement = NA) {
-  
-  response <- rlocker::store(session, statement)
-  
-  return(response)
+storeStatement <- function(session = NULL, statement = NA) {
+  tryCatch({
+    if(!is.na(statement) & statement != ""){
+      response <- rlocker::store(session, statement)
+      return(response)
+    } else {
+      return(400)
+    }
+  }, error = function(e) {
+    warning("Unable to store xAPI statement.", call. = FALSE)  
+  })
 }
 
 # WIP Not yet finalized

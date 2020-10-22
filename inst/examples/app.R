@@ -11,7 +11,7 @@ ui <- dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      id = "tabs",
+      id = "pages",
       menuItem("Sample", tabName = "Sample", icon = icon("book"))
     ),
     tableOutput("inputDebugger"),
@@ -98,19 +98,19 @@ server <- function(input, output, session) {
   })
   
   isolate({
-    print(all.vars(session$input$tabs))
+    #print(all.vars(session$input$tabs))
   })
   
   observe({
     #print(session$manageInputs(session$input))
   })
   
-  observeEvent(session$sendInsertTab, function(...) {
-    print("Tab")
-    print(...)
-  })
+  # observeEvent(session$sendInsertTab, function(...) {
+  #   print("Tab")
+  #   print(...)
+  # })
   
-  boastUtils:::.renderInputDebugger(session)
+  #boastUtils:::.renderInputDebugger(session)
 }
 
 # Run the application

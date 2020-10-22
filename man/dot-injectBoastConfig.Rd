@@ -9,5 +9,6 @@
 \description{
 Injects boastApp configuration into the head of the default shinyApp server function;
 occurs \strong{before} shinyApp::onStart(). This is important to setup environment data so
-that it can be used within the default app.R/server.R server function.
+that it can be used within the default app.R/server.R server function. Expects shiny
+session to be passed on runtime.
 }

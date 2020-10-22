@@ -28,11 +28,13 @@ scripts <- function() {
 #' 
 #' Injects boastApp configuration into the head of the default shinyApp server function; 
 #' occurs **before** shinyApp::onStart(). This is important to setup environment data so
-#' that it can be used within the default app.R/server.R server function.
+#' that it can be used within the default app.R/server.R server function. Expects shiny
+#' session to be passed on runtime.
 .injectBoastConfig <- function(server) {
   
   body <- as.list(body(server))
   
+  # .boastInit is executed **after** shinyApp::onStart()
   call <- as.call(
     quote({
       connection <- boastUtils:::.boastInit(session)
@@ -40,7 +42,7 @@ scripts <- function() {
   )
 
   body(server) <- as.call(append(body, call, 1))
-
+  
   return(server)
 }
 
@@ -50,20 +52,37 @@ scripts <- function() {
 #' environment variables.
 .boastInit <- function(session) {
   
-  # Setup environment variables
-  BASE_DIR <- normalizePath(getwd())
-  APP_NAME <- basename(BASE_DIR)
-  APP_ROOT <- BASE_DIR
-  Sys.setenv("APP_NAME" = APP_NAME)
-  Sys.setenv("APP_ROOT" = APP_ROOT)
+  tryCatch({
+    if (class(session)[1] != "ShinySession") {
+      stop(call. = FALSE)
+    } else {
+      # Setup environment variables
+      BASE_DIR <- normalizePath(getwd())
+      APP_NAME <- basename(BASE_DIR)
+      APP_ROOT <- BASE_DIR
+      Sys.setenv("APP_NAME" = APP_NAME)
+      Sys.setenv("APP_ROOT" = APP_ROOT)
+      
+      # Store connection details
+      connection <- boastUtils:::.boastConnect(session)
+      
+      boastUtils:::.bindInputEvents(session)
+      boastUtils:::.bindSessionEnd(session)
+      
+      return(connection)
+    }  
+  }, error = function(e) {
+    message(
+      paste(
+        "boastApp: ShinySession not set!\n",
+        "Please include it in your app's server definition.\n",
+        "Example: server <- function(input, output, session) { ... }"
+      )
+    )
+  })
   
-  # Store connection details
-  connection <- boastUtils:::.boastConnect(session)
-  
-  boastUtils:::.bindInputEvents(session)
-  boastUtils:::.bindSessionEnd(session)
-  
-  return(connection)
+  # Internal Server Error (HTTP 500).
+  return(list("status" = 500))
 }
 
 #' .boastConnect
