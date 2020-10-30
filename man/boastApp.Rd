@@ -4,7 +4,7 @@
 \alias{boastApp}
 \title{BOAST App}
 \usage{
-boastApp(ui, server)
+boastApp(ui, server, config = NA)
 }
 \description{
 Overrides the default shinyApp ui and server config

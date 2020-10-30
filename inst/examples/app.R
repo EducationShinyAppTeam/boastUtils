@@ -114,4 +114,4 @@ server <- function(input, output, session) {
 }
 
 # Run the application
-boastApp(ui = ui, server = server)
+boastApp(ui = ui, server = server, config = list(log = FALSE))

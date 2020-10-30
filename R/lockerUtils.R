@@ -144,7 +144,7 @@ generateStatement <- function(
   score = list(),
   completion = NA,
   extensions = list()) {
-  
+
   tryCatch({
     # Assumes input has corresponding DOM id to anchor to
     if (is.na(object)) {
@@ -209,7 +209,8 @@ generateStatement <- function(
     return(statement)
   }, error = function(e) {
     warning("Unable to create xAPI statement.", call. = FALSE)
-  })
+  })  
+  
 }
 
 #' storeStatement
@@ -218,16 +219,22 @@ generateStatement <- function(
 #' 
 #' @export
 storeStatement <- function(session = NULL, statement = NA) {
-  tryCatch({
-    if(!is.na(statement) & statement != ""){
-      response <- rlocker::store(session, statement)
-      return(response)
-    } else {
-      return(400)
-    }
-  }, error = function(e) {
-    warning("Unable to store xAPI statement.", call. = FALSE)  
-  })
+  logging <- Sys.getenv("XAPI_LOGGING")
+  
+  if(logging) {
+    tryCatch({
+      if(!is.na(statement) & statement != ""){
+        response <- rlocker::store(session, statement)
+        return(response)
+      } else {
+        return(400)
+      }
+    }, error = function(e) {
+      warning("Unable to store xAPI statement.", call. = FALSE)  
+    })
+  } else {
+    message("xAPI Logging Disabled")
+  }
 }
 
 # WIP Not yet finalized

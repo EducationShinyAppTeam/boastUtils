@@ -63,11 +63,20 @@ scripts <- function() {
       Sys.setenv("APP_NAME" = APP_NAME)
       Sys.setenv("APP_ROOT" = APP_ROOT)
       
-      # Store connection details
-      connection <- boastUtils:::.boastConnect(session)
+      logging <- Sys.getenv("XAPI_LOGGING")
       
-      boastUtils:::.bindInputEvents(session)
-      boastUtils:::.bindSessionEnd(session)
+      connection <- list(
+        status = 501
+      )
+        
+      # Store connection details
+      if(logging) {
+        connection <- boastUtils:::.boastConnect(session)  
+        boastUtils:::.bindInputEvents(session)
+        boastUtils:::.bindSessionEnd(session)
+      } else {
+        message("xAPI Logging Disabled")
+      }
       
       return(connection)
     }  
