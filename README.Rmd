@@ -27,6 +27,11 @@ You can install this version of boastUtils from [GitHub](https://github.com/) wi
 devtools::install_github("EducationShinyAppTeam/boastUtils")
 ```
 
+**Troubleshooting:**
+- [Error: (converted from warning) package 'xyz' was built under R version x.y.z](https://github.com/r-lib/remotes/issues/403#issuecomment-513891775)
+
+Create an [issue](https://github.com/EducationShinyAppTeam/boastUtils/issues) if the problem is not solved by one of the above.
+
 ## Creating an App
 
 One way to accomplish serving a more standardized codebase was to provide a wrapper for the default [shinyApp](https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html) function. Instead of including the `shiny` package, include `boastUtils` and write your app as normal. Be sure to replace `shinyApp` with `boastApp`.
