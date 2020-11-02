@@ -247,3 +247,20 @@ getAppIdentifier <- function() {
   })
   return(success)
 }
+
+# TODO: FINISH ME
+.getAppDescription <- function() {
+  try({
+    APP_ROOT <- getAppRoot()
+    if (APP_ROOT != "") {
+      DESCRIPTION <- file.path(APP_ROOT, "DESCRIPTION")
+      contents <- read.dcf(file = DESCRIPTION)
+      if(contents) {
+        df <- as.data.frame(contents)
+        return(df)  
+      }
+    } else {
+      warning("Unable to determine root directory, skipping DESCRIPTION.")
+    }
+  })
+}
