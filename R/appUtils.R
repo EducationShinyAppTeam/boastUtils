@@ -248,19 +248,48 @@ getAppIdentifier <- function() {
   return(success)
 }
 
-# TODO: FINISH ME
-.getAppDescription <- function() {
-  try({
+#' Get metadata
+#' 
+#' Returns metadata stored in app's DESCRIPTION file.
+#' 
+#' @return dataframe
+#' 
+#' @export
+getAppMeta <- function() {
+  
+  meta <- NA_character_
+  
+  tryCatch({
+    # Get root directory of current app.
     APP_ROOT <- getAppRoot()
+    
     if (APP_ROOT != "") {
+      
+      # Set expected file path based on APP_ROOT directory.
       DESCRIPTION <- file.path(APP_ROOT, "DESCRIPTION")
-      contents <- read.dcf(file = DESCRIPTION)
-      if(contents) {
-        df <- as.data.frame(contents)
-        return(df)  
+      
+      # Check if DESCRIPTION file exists.
+      if(file.exists(DESCRIPTION)) {
+        
+        # Read contents of DESCRIPTION file; empty file returns a <0 x 0 matrix>.
+        contents <- read.dcf(file = DESCRIPTION)
+        
+        # If DESCRIPTION file has content, return it as a data frame.
+        if(length(contents)) {
+          meta <- as.data.frame(contents)
+        }  
+      } else {
+        warning(
+          paste("DESCRIPTION metadata file does not exist, please create one in your project root. Refer to:",
+                "\n  https://educationshinyappteam.github.io/Style_Guide/coding.html#metadata")
+        )
       }
     } else {
       warning("Unable to determine root directory, skipping DESCRIPTION.")
     }
+  }, error = function(cond) {
+    return(NA)
   })
+  
+  return(meta)
 }

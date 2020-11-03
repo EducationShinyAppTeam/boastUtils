@@ -109,6 +109,8 @@ server <- function(input, output, session) {
   #   print("Tab")
   #   print(...)
   # })
+  # 
+  print(APP_META)
   
   #boastUtils:::.renderInputDebugger(session)
 }

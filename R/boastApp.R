@@ -7,6 +7,7 @@
 #' @export
 boastApp <- function(ui, server, config = NA) {
   
+  # Conditionally load rLocker package depending on passed configuration
   logging <- ifelse(!is.na(config), config$log, TRUE)
   
   Sys.setenv("XAPI_LOGGING" = logging)
@@ -14,7 +15,11 @@ boastApp <- function(ui, server, config = NA) {
   if(logging) {
     library(rlocker)
   }
-
+  
+  # Store app Metadata
+  APP_META <<- getAppMeta()
+  
+  # Setup app html template
   ui <- htmlTemplate(
     system.file("templates", "template.html", package = "boastUtils"),
     document_ = TRUE,
