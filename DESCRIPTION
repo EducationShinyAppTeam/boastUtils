@@ -1,8 +1,8 @@
 Package: boastUtils
 Type: Package
 Title: BOAST Utilities
-Version: 0.1.9
-Date: 2020-10-30
+Version: 0.1.9.1
+Date: 2020-11-03
 Authors@R: c(
   person("Robert", "Carey", email = "rpc5102@psu.edu", role = c("aut", "cre")),
   person("Neil", "Hatfield", email = "njh5464@psu.edu", role = "aut")
@@ -14,8 +14,9 @@ BugReports: https://github.com/EducationShinyAppTeam/boastUtils/issues
 License: GPL-3.0+
 Encoding: UTF-8
 LazyData: true
-Depends: config, htmltools, httr, lintr, rsconnect, shiny (>= 0.11), shinydashboard, sofa, stringr
+Depends: config, htmltools, httr, shiny (>= 0.11), shinydashboard
 Imports: rlocker (>= 0.2.4.4)
+Suggests: sofa, stringr
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 Remotes: rpc5102/rlocker
