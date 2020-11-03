@@ -15,7 +15,7 @@ License: GPL-3.0+
 Encoding: UTF-8
 LazyData: true
 Depends: config, htmltools, httr, lintr, rsconnect, shiny (>= 0.11), shinydashboard, sofa, stringr
-Suggests: rlocker (>= 0.2.4.4)
+Imports: rlocker (>= 0.2.4.4)
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 Remotes: rpc5102/rlocker
