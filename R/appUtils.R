@@ -296,3 +296,39 @@ getAppMeta <- function() {
   
   return(meta)
 }
+
+#' Get app title
+#' 
+#' Returns tile stored in app's DESCRIPTION file.
+#' 
+#' @usage getAppTitle()
+#' 
+#' @examples
+#' > getAppTitle()
+#' [1] "Sample App"
+#' > getAppTitle(short = FALSE, case = "snake")
+#' [1] "Sample_App__A_Lengthy_Title"
+#' @return character
+#' 
+#' @export
+getAppTitle <- function(case = "title", short = TRUE) {
+  title <- NA_character_
+  
+  # Check if APP_META is set.
+  if(!is.null(dim(APP_META))) {
+    title <- ifelse(short, APP_META$ShortName, APP_META$Title)
+    if(!is.null(title)) {
+      # We are just going to assume it is in title case already (because it should be).
+      if(case == "snake") {
+        title <- gsub("[[:punct:]]", "", title) # Remove punctuation
+        title <- gsub(" ", "_", title) # Replace spaces with underscores
+        # TODO: stringr/stringi str_to_title would be much better for this
+      }
+    } else {
+      value <- ifelse(short, "ShortName", "Title")
+      warning(paste0("Specified value `", value, "` was not found in the metadata."))
+    }
+  }
+  
+  return(title)
+}

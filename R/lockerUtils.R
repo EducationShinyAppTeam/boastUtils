@@ -163,13 +163,14 @@ generateStatement <- function(
     }
     
     agent <- getLockerConfig()$agent
-    
+    name <- getAppTitle(short = TRUE, case = "snake")
+      
     stmt <- list(
       agent = agent,
       verb =  verb,
       object = list(
         id = paste0(boastUtils::getCurrentAddress(session), object),
-        name = paste0(APP_TITLE),
+        name = name,
         description = description
       ),
       result = list()
