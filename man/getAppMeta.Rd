@@ -6,7 +6,9 @@
 \usage{
 getAppMeta()
 }
+\value{
+dataframe
+}
 \description{
-Returns meta info stored in app DESCRIPTION file.
-TODO: FINISH ME
+Returns metadata stored in app's DESCRIPTION file.
 }
