@@ -78,6 +78,9 @@ scripts <- function() {
         message("xAPI Logging Disabled")
       }
       
+      # Store app metadata globally for shared use
+      APP_META <<- getAppMeta()
+      
       return(connection)
     }  
   }, error = function(e) {

@@ -16,9 +16,6 @@ boastApp <- function(ui, server, config = NA) {
     library(rlocker)
   }
   
-  # Store app Metadata
-  APP_META <<- getAppMeta()
-  
   # Setup app html template
   ui <- htmlTemplate(
     system.file("templates", "template.html", package = "boastUtils"),
