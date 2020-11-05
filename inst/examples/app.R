@@ -4,7 +4,7 @@ library(boastUtils)
 ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(
-    title = APP_TITLE,
+    title = "Sample App",
     tags$li(class = "dropdown", tags$a(href = "https://shinyapps.science.psu.edu/", icon("home")))
   ),
   dashboardSidebar(

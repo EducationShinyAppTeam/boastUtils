@@ -259,27 +259,34 @@ getAppIdentifier <- function() {
 #' 
 #' @export
 getAppMeta <- function() {
-  
   meta <- NA_character_
-  
   tryCatch({
     # Get root directory of current app.
     APP_ROOT <- getAppRoot()
     
     if (APP_ROOT != "") {
-      
       # Set expected file path based on APP_ROOT directory.
       DESCRIPTION <- file.path(APP_ROOT, "DESCRIPTION")
       
       # Check if DESCRIPTION file exists.
       if(file.exists(DESCRIPTION)) {
-        
         # Read contents of DESCRIPTION file; empty file returns a <0 x 0 matrix>.
-        contents <- read.dcf(file = DESCRIPTION)
+        # If this causes problems try removing textConnection portion.
+        con <- textConnection(shiny:::readUTF8(DESCRIPTION))
+               on.exit(close(con), add = TRUE)
+        contents <- read.dcf(con)
         
-        # If DESCRIPTION file has content, return it as a data frame.
+        # If DESCRIPTION file has content, return it as a list.
         if(length(contents)) {
-          meta <- as.data.frame(contents)
+          meta <- lapply(as.data.frame(contents), function(value) {
+            tryCatch({
+              # Some keys can have multiple values stored in a vector.
+              # Try to extract the quoted values; if unsuccessful, return unparsed value.
+              return(eval(parse(text = value)))
+            }, error = function(e) {
+              return(value)
+            })
+          })
         }  
       } else {
         warning(
@@ -331,7 +338,7 @@ getAppTitle <- function(case = "title", short = TRUE) {
   }
   
   # @deprecated warning
-  if(!is.null(APP_TITLE) || !is.null(APP_DESCP)) {
+  if(exists(APP_TITLE) || exists(APP_DESCP)) {
     message(
       paste("Deprecation: Please move APP_TITLE and/or APP_DESCP to metadata file. Refer to:",
             "\n  https://educationshinyappteam.github.io/Style_Guide/coding.html#metadata")
