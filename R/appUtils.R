@@ -255,7 +255,7 @@ getAppIdentifier <- function() {
 #' 
 #' Returns metadata stored in app's DESCRIPTION file.
 #' 
-#' @return dataframe
+#' @return list
 #' 
 #' @export
 getAppMeta <- function() {
