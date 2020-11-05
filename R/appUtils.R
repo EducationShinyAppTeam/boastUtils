@@ -330,5 +330,13 @@ getAppTitle <- function(case = "title", short = TRUE) {
     }
   }
   
+  # @deprecated warning
+  if(!is.null(APP_TITLE) || !is.null(APP_DESCP)) {
+    message(
+      paste("Deprecation: Please move APP_TITLE and/or APP_DESCP to metadata file. Refer to:",
+            "\n  https://educationshinyappteam.github.io/Style_Guide/coding.html#metadata")
+    )
+  }
+  
   return(title)
 }

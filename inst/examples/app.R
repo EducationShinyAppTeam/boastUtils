@@ -1,7 +1,5 @@
 library(boastUtils)
 
-APP_TITLE <<- "APP_TITLE"
-
 # Define UI for application
 ui <- dashboardPage(
   skin = "blue",
