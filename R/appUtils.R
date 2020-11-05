@@ -278,15 +278,20 @@ getAppMeta <- function() {
         
         # If DESCRIPTION file has content, return it as a list.
         if(length(contents)) {
-          meta <- lapply(as.data.frame(contents), function(value) {
-            tryCatch({
-              # Some keys can have multiple values stored in a vector.
-              # Try to extract the quoted values; if unsuccessful, return unparsed value.
-              return(eval(parse(text = value)))
-            }, error = function(e) {
-              return(value)
-            })
+          cols <- colnames(contents)
+          vectors_allowed <- c("Authors@R", "LearningObjectives")
+          meta <- lapply(cols, function(key) {
+            value <- contents[1,key][[1]]
+            if(key %in% vectors_allowed) {
+              tryCatch({
+                # Some keys can have multiple values stored in a vector.
+                # Try to extract the quoted values; if unsuccessful, return unparsed value.
+                value <- eval(parse(text = value))
+              })  
+            }
+            return(value)
           })
+          names(meta) <- cols
         }  
       } else {
         warning(

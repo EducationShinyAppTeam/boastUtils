@@ -7,7 +7,7 @@
 getAppMeta()
 }
 \value{
-dataframe
+list
 }
 \description{
 Returns metadata stored in app's DESCRIPTION file.
