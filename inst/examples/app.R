@@ -1,17 +1,15 @@
 library(boastUtils)
 
-APP_TITLE <<- "APP_TITLE"
-
 # Define UI for application
 ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(
-    title = APP_TITLE,
+    title = "Sample App",
     tags$li(class = "dropdown", tags$a(href = "https://shinyapps.science.psu.edu/", icon("home")))
   ),
   dashboardSidebar(
     sidebarMenu(
-      id = "tabs",
+      id = "pages",
       menuItem("Sample", tabName = "Sample", icon = icon("book"))
     ),
     tableOutput("inputDebugger"),
@@ -98,20 +96,20 @@ server <- function(input, output, session) {
   })
   
   isolate({
-    print(all.vars(session$input$tabs))
+    #print(all.vars(session$input$tabs))
   })
   
   observe({
     #print(session$manageInputs(session$input))
   })
   
-  observeEvent(session$sendInsertTab, function(...) {
-    print("Tab")
-    print(...)
-  })
+  # observeEvent(session$sendInsertTab, function(...) {
+  #   print("Tab")
+  #   print(...)
+  # })
   
-  boastUtils:::.renderInputDebugger(session)
+  #boastUtils:::.renderInputDebugger(session)
 }
 
 # Run the application
-boastApp(ui = ui, server = server)
+boastApp(ui = ui, server = server, config = list(log = FALSE))

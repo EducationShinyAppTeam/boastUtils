@@ -19,6 +19,10 @@ You can install this version of boastUtils from
 ``` r
 devtools::install_github("EducationShinyAppTeam/boastUtils")
 ```
+Troubleshooting:
+- [Error: (converted from warning) package 'xyz' was built under R version x.y.z](https://github.com/r-lib/remotes/issues/403#issuecomment-513891775)
+
+Create an [issue](https://github.com/EducationShinyAppTeam/boastUtils/issues) if the problem is not solved by one of the above.
 
 ## Creating an App
 

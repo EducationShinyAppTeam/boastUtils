@@ -4,7 +4,7 @@
 \alias{storeStatement}
 \title{storeStatement}
 \usage{
-storeStatement(session, statement = NA)
+storeStatement(session = NULL, statement = NA)
 }
 \description{
 Store xAPI Statement in configured Store.
