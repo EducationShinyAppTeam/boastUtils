@@ -333,8 +333,6 @@ getAppTitle <- function(case = "title", short = TRUE) {
   title <- NA_character_
   
   # Check if APP_META is set; retrieve if not.
-  # Single line ifelse will return:
-  #   error 'x' is NULL so the result will be NULL
   meta <- NA
   if(!exists("APP_META")) {
     meta <- getAppMeta()
@@ -363,12 +361,12 @@ getAppTitle <- function(case = "title", short = TRUE) {
   }
   
   # @deprecated warning
-  if(exists("APP_TITLE") || exists("APP_DESCP")) {
-    message(
-      paste("Deprecation: Please move APP_TITLE and/or APP_DESCP to metadata file. Refer to:",
-            "\n  https://educationshinyappteam.github.io/Style_Guide/coding.html#metadata")
-    )
-  }
+  # if(exists("APP_TITLE") || exists("APP_DESCP")) {
+  #   message(
+  #     paste("Deprecation: Please move APP_TITLE and/or APP_DESCP to metadata file. Refer to:",
+  #           "\n  https://educationshinyappteam.github.io/Style_Guide/coding.html#metadata")
+  #   )
+  # }
   
   return(title)
 }
