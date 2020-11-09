@@ -287,6 +287,12 @@ getAppMeta <- function() {
                 # Some keys can have multiple values stored in a vector.
                 # Try to extract the quoted values; if unsuccessful, return unparsed value.
                 value <- eval(parse(text = value))
+              }, error = function(cond) {
+                print(cond)
+                return(NA)
+              }, warning = function(cond) {
+                print(cond)
+                return(NULL)
               })  
             }
             return(value)
@@ -326,10 +332,22 @@ getAppMeta <- function() {
 getAppTitle <- function(case = "title", short = TRUE) {
   title <- NA_character_
   
-  # Check if APP_META is set.
-  if(!is.null(dim(APP_META))) {
-    title <- ifelse(short, APP_META$ShortName, APP_META$Title)
-    if(!is.null(title)) {
+  # Check if APP_META is set; retrieve if not.
+  # Single line ifelse will return:
+  #   error 'x' is NULL so the result will be NULL
+  meta <- NA
+  if(!exists("APP_META")) {
+    meta <- getAppMeta()
+  } else {
+    meta <- APP_META
+  }
+  
+  # Check if metadata list contains data and is not all NA's.
+  # If checking lists for NA you'll end up with:
+  #   the condition has length > 1 and only the first element will be used
+  if(!is.na(all(is.na(meta)))) {
+    title <- ifelse(short, meta$ShortName, meta$Title)
+    if(!is.na(title)) {
       # We are just going to assume it is in title case already (because it should be).
       if(case == "snake") {
         title <- gsub("[[:punct:]]", "", title) # Remove punctuation
@@ -340,10 +358,12 @@ getAppTitle <- function(case = "title", short = TRUE) {
       value <- ifelse(short, "ShortName", "Title")
       warning(paste0("Specified value `", value, "` was not found in the metadata."))
     }
+  } else {
+    warning("Could not obtain metadata info.")
   }
   
   # @deprecated warning
-  if(exists(APP_TITLE) || exists(APP_DESCP)) {
+  if(exists("APP_TITLE") || exists("APP_DESCP")) {
     message(
       paste("Deprecation: Please move APP_TITLE and/or APP_DESCP to metadata file. Refer to:",
             "\n  https://educationshinyappteam.github.io/Style_Guide/coding.html#metadata")

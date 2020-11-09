@@ -94,21 +94,7 @@ server <- function(input, output, session) {
     )
     #message(paste("Sample xAPI data: \n", stmt))
   })
-  
-  isolate({
-    #print(all.vars(session$input$tabs))
-  })
-  
-  observe({
-    #print(session$manageInputs(session$input))
-  })
-  
-  # observeEvent(session$sendInsertTab, function(...) {
-  #   print("Tab")
-  #   print(...)
-  # })
-  #boastUtils:::.renderInputDebugger(session)
 }
 
 # Run the application
-boastApp(ui = ui, server = server, config = list(log = FALSE))
+boastApp(ui = ui, server = server, config = list(log = TRUE))
