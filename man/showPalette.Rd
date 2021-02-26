@@ -4,8 +4,17 @@
 \alias{showPalette}
 \title{showPalette}
 \usage{
-showPalette(palette)
+showPalette(palette = boastPalette)
+}
+\value{
+A pie chart of palette colors.
 }
 \description{
-showPalette
+Used to quickly visualize what color options are available in a given palette.
+}
+\examples{
+showPalette()
+showPalette(psuPalette)
+showPalette(psuPalette[2])
+
 }
