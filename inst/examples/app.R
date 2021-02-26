@@ -50,6 +50,7 @@ ui <- dashboardPage(
         p(
           textOutput("output1")
         ),
+        surveyLink(name = "test"),
         actionButton("quit", "Quit")
       )
     )
