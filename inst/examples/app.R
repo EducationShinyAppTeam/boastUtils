@@ -94,6 +94,7 @@ server <- function(input, output, session) {
     )
     #message(paste("Sample xAPI data: \n", stmt))
   })
+  
 }
 
 # Run the application
