@@ -1,7 +1,7 @@
 BOAST Utilities
 ================
 EducationShinyAppTeam
-November 13, 2019
+February 26, 2021
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -37,7 +37,7 @@ function. Instead of including the `shiny` package, include `boastUtils`
 and write your app as normal. Be sure to replace `shinyApp` with
 `boastApp`.
 
-##### Example app.R
+**Example app.R**
 
 ``` r
 library(boastUtils)
@@ -55,11 +55,52 @@ boastApp(ui = ui, server = server)
 
 ## Configuration
 
-We currently only have one app config option available which disables
-xAPI logging.
+We currently have one config option available which disables xAPI
+logging.
 
-##### Example app.R
+**Example app.R**
 
 ``` r
 boastApp(ui = ui, server = server, config = list("log" = FALSE))
+```
+
+## Additional Configuration
+
+To connect with services such as CouchDB for persistent storage, place
+details in an environment variable using `appDir/inst/.Renviron`. This
+information is then pulled into `boastUtils/inst/config.yml` on app
+startup. These details are meant to be kept private and should not be
+pushed to GitHub.
+
+**See also:**
+
+-   `boastUtils:::.getConfig()` *private*
+-   <https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html#authentication>
+
+**.Renviron**
+
+``` txt
+DB_USER=<DATABASE_USERNAME>
+DB_PASSWORD=<DATABASE_PASSWORD>
+R_CONFIG_ACTIVE=rsconnect
+```
+
+**config.yml**
+
+``` yml
+default:
+  database:
+    host: 'localhost'
+    transport: 'https'
+    port: NULL
+    user: 'root'
+    pwd: 'root'
+  
+rsconnect:
+  database:
+    host: 'dev.stat.vmhost.psu.edu/couch'
+    transport: 'https'
+    port: NULL
+    user: !expr Sys.getenv("DB_USER")
+    pwd: !expr Sys.getenv("DB_PASSWORD")
 ```
