@@ -50,14 +50,24 @@ psuPalette <- c(
 )
 
 #' showPalette
+#' 
+#' Used to quickly visualize what color options are available in a given palette.
+#' 
+#' @return A pie chart of palette colors.
+#'
+#' @examples
+#' showPalette()
+#' showPalette(psuPalette)
+#' showPalette(psuPalette[2])
+#' 
 #' @export
-showPalette <- function(palette){
+showPalette <- function(palette = boastPalette){
   name <- deparse(substitute(palette))
   wedgeLabels <- c()
   for (i in 1:length(palette)) {
     wedgeLabels[i] <- paste(
       paste0(name, "[", i, "]"),
-      boastPalette[i],
+      palette[i],
       sep = "\n"
     )
   }

@@ -17,11 +17,11 @@ boastApp <- function(ui, server, config = NA) {
   }
   
   # Setup app html template
-  ui <- htmlTemplate(
+  shinyUI <- htmlTemplate(
     system.file("templates", "template.html", package = "boastUtils"),
     document_ = TRUE,
     body = ui
   )
 
-  shinyApp(ui, .injectBoastConfig(server))
+  shinyApp(shinyUI, .injectBoastConfig(server))
 }
