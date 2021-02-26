@@ -50,6 +50,7 @@ ui <- dashboardPage(
         p(
           textOutput("output1")
         ),
+        surveyLink(name = "test"),
         actionButton("quit", "Quit")
       )
     )
@@ -94,6 +95,7 @@ server <- function(input, output, session) {
     )
     #message(paste("Sample xAPI data: \n", stmt))
   })
+  
 }
 
 # Run the application

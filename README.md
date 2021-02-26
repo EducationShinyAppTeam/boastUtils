@@ -61,7 +61,7 @@ logging.
 **Example app.R**
 
 ``` r
-boastApp(ui = ui, server = server, config = list("log" = FALSE))
+boastApp(ui = ui, server = server, config = list(log = FALSE))
 ```
 
 ## Additional Configuration

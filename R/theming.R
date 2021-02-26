@@ -243,3 +243,35 @@ renderIcon <- function(icon = "default", width = 36, html = FALSE){
     return(markup)
   }
 }
+
+#' surveyLink
+#' 
+#' @param name Short Name for survey reference
+#' @param markup Return link as markup or plain-text
+#' 
+#' @return UI Element or Text
+#' 
+#' @examples
+#' surveyLink()
+#' surveyLink(name = "App_Name")
+#' surveyLink(markup = FALSE)
+#' 
+#' @export
+surveyLink <- function(name = NA, markup = TRUE) {
+  appName <- ""
+  
+  if(is.na(name)) {
+    # Try to get the name from the meta file
+    appName <- getAppTitle(case = "snake")
+  } else {
+    appName <- name  
+  }
+  
+  link <- paste0("https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=", htmltools::urlEncodePath(appName))
+  
+  if(markup) {
+    link <- shiny::tags$a(target = "_blank", shiny::icon("comments"), href = link)  
+  }
+  
+  return(link)
+}
