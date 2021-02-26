@@ -19,10 +19,14 @@ You can install this version of boastUtils from
 ``` r
 devtools::install_github("EducationShinyAppTeam/boastUtils")
 ```
-Troubleshooting:
-- [Error: (converted from warning) package 'xyz' was built under R version x.y.z](https://github.com/r-lib/remotes/issues/403#issuecomment-513891775)
 
-Create an [issue](https://github.com/EducationShinyAppTeam/boastUtils/issues) if the problem is not solved by one of the above.
+**Troubleshooting:** - [Error: (converted from warning) package ‘xyz’
+was built under R version
+x.y.z](https://github.com/r-lib/remotes/issues/403#issuecomment-513891775)
+
+Create an
+[issue](https://github.com/EducationShinyAppTeam/boastUtils/issues) if
+the problem is not solved by one of the above.
 
 ## Creating an App
 
@@ -31,7 +35,7 @@ provide a wrapper for the default
 [shinyApp](https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html)
 function. Instead of including the `shiny` package, include `boastUtils`
 and write your app as normal. Be sure to replace `shinyApp` with
-`boastApp`. **Note**: The server argument `session` is required.
+`boastApp`.
 
 ##### Example app.R
 
@@ -47,4 +51,15 @@ server <- function(input, output, session){
 }
 
 boastApp(ui = ui, server = server)
+```
+
+## Configuration
+
+We currently only have one app config option available which disables
+xAPI logging.
+
+##### Example app.R
+
+``` r
+boastApp(ui = ui, server = server, config = list("log" = FALSE))
 ```

@@ -50,3 +50,13 @@ server <- function(input, output, session){
 
 boastApp(ui = ui, server = server)
 ```
+
+
+## Configuration
+
+We currently have one config option available which disables xAPI logging.
+
+##### Example app.R
+```{r}
+boastApp(ui = ui, server = server, config = list("log" = FALSE))
+```
