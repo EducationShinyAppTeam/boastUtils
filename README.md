@@ -74,7 +74,7 @@ pushed to GitHub.
 
 **See also:**
 
--   `boastUtils:::.getConfig()` *private*
+-   `boastUtils:::.getConfig()`
 -   <https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html#authentication>
 
 **.Renviron**
