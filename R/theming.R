@@ -5,15 +5,15 @@
 NULL
 
 #' boastPalette
-#' 
+#'
 #' Based on the Wong Color Blind Set
 #' @seealso \href{https://www.nature.com/articles/nmeth.1618}{https://www.nature.com/articles/nmeth.1618}
-#' 
+#'
 #' @return A palette
-#' 
-#' @examples 
+#'
+#' @examples
 #' showPalette(boastPalette)
-#' 
+#'
 #' @export
 boastPalette <- c(
   "#0072B2",
@@ -28,15 +28,15 @@ boastPalette <- c(
 )
 
 #' psuPalette
-#' 
+#'
 #' Based on Penn State's three official color palettes.
 #' @seealso \href{https://brand.psu.edu/design-essentials.html#color}{https://brand.psu.edu/}
-#' 
+#'
 #' @return A palette
-#' 
-#' @examples 
+#'
+#' @examples
 #' showPalette(psuPalette)
-#' 
+#'
 #' @export
 psuPalette <- c(
   "#1E407C",
@@ -50,9 +50,34 @@ psuPalette <- c(
 )
 
 #' showPalette
+#' 
+#' Used to quickly visualize what color options are available in a given palette.
+#' 
+#' @return A pie chart of palette colors.
+#'
+#' @examples
+#' showPalette()
+#' showPalette(psuPalette)
+#' showPalette(psuPalette[2])
+#' 
 #' @export
-showPalette <- function(palette) {
-  graphics::pie(rep(1, length(palette)), palette, col = palette)
+showPalette <- function(palette = boastPalette){
+  name <- deparse(substitute(palette))
+  wedgeLabels <- c()
+  for (i in 1:length(palette)) {
+    wedgeLabels[i] <- paste(
+      paste0(name, "[", i, "]"),
+      palette[i],
+      sep = "\n"
+    )
+  }
+  graphics::pie(
+    x = rep(1, length(palette)),
+    labels = wedgeLabels,
+    col = palette,
+    main = paste("The", name),
+    radius = 1
+  )
 }
 
 #' PennState Eberly College of Science Logo
@@ -132,9 +157,9 @@ psu_eberly_logo <- function(style = "default"){
 }
 
 #' Creative Commons CC BY-NC-SA 4.0 Logo
-#' 
+#'
 #' Renders licensing info as HTML.
-#' 
+#'
 #' @details
 #' # License Details
 #'     Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
@@ -175,7 +200,7 @@ copyrightInfo <- function() {
       </svg>
     </div>'
   )
-  
+
   return(license)
 }
 
@@ -187,21 +212,21 @@ copyrightInfo <- function() {
 #'
 #' @return <shiny.render.function> or html
 #'
-#' @examples 
+#' @examples
 #' renderIcon("correct")
 #' renderIcon("incorrect", width = 25, html = TRUE)
-#' 
+#'
 #' @export
 renderIcon <- function(icon = "default", width = 36, html = FALSE){
-  
-  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
   # NOTE:                                                                                       #
   #   If we start getting a ton of icons it would be best to use this approach:                 #
   #   @link{https://github.com/rstudio/fontawesome/blob/master/tools/generate_fa_sysdata.R}     #
-  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-  
+  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
   markup <- ""
-  
+
   if (icon == "correct") {
      markup <- img(src = "icons/correct.png", alt = "Success, you are correct", width = width)
   } else if(icon == "incorrect") {
@@ -211,7 +236,7 @@ renderIcon <- function(icon = "default", width = 36, html = FALSE){
   } else {
     # default
   }
-  
+
   if (!html) {
     renderUI(markup)
   } else {
