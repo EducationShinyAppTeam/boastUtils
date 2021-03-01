@@ -320,8 +320,41 @@ surveyLink <- function(name = NA, markup = TRUE) {
   link <- paste0("https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=", htmltools::urlEncodePath(appName))
   
   if(markup) {
-    link <- shiny::tags$a(target = "_blank", shiny::icon("comments"), href = link)  
+    link <- tags$a(target = "_blank", icon("comments"), href = link)  
   }
   
   return(link)
+}
+
+#' complianceLinks
+#' 
+#' @return UI Element
+#' 
+#' @examples
+#' complianceLinks()
+#' 
+#' @export
+complianceLinks <- function() {
+  markup <- tags$ul(class = "legal-links list-inline small",
+    tags$li(tags$a(href = "mailto:boast-project@psu.edu", "Contact")),
+    tags$li(tags$a(target = "_blank", href = "https://www.psu.edu/web-privacy-statement/", "Privacy")),
+    tags$li(tags$a(target = "_blank", href = "https://www.psu.edu/accessibilitystatement/", "Accessibility")),
+  )
+}
+
+#' sidebarFooter
+#' 
+#' @return UI Element
+#' 
+#' @examples
+#' sidebarFooter()
+#' 
+#' @export
+sidebarFooter <- function() {
+  ui <- list(
+    psu_eberly_logo("reversed"),
+    complianceLinks()
+  )
+  
+  return(ui)
 }

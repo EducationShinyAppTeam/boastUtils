@@ -16,7 +16,7 @@ ui <- dashboardPage(
     tableOutput("inputDebugger"),
     tags$div(
       class = "sidebar-logo",
-      psu_eberly_logo("reversed")
+      sidebarFooter()
     )
   ),
   dashboardBody(
