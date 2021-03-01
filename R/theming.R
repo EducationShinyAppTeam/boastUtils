@@ -351,10 +351,10 @@ complianceLinks <- function() {
 #' 
 #' @export
 sidebarFooter <- function() {
-  ui <- list(
+  footer <- tags$div(class = "sidebar-footer",
     psu_eberly_logo("reversed"),
     complianceLinks()
   )
   
-  return(ui)
+  return(footer)
 }
