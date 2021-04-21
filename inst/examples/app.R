@@ -5,6 +5,7 @@ ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(
     title = "Sample App",
+    tags$li(class = "dropdown", surveyLink()),
     tags$li(class = "dropdown", tags$a(href = "https://shinyapps.science.psu.edu/", icon("home")))
   ),
   dashboardSidebar(
@@ -15,7 +16,7 @@ ui <- dashboardPage(
     tableOutput("inputDebugger"),
     tags$div(
       class = "sidebar-logo",
-      psu_eberly_logo("reversed")
+      sidebarFooter()
     )
   ),
   dashboardBody(
@@ -50,7 +51,6 @@ ui <- dashboardPage(
         p(
           textOutput("output1")
         ),
-        surveyLink(name = "test"),
         actionButton("quit", "Quit")
       )
     )
