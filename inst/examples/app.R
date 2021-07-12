@@ -42,6 +42,7 @@ ui <- dashboardPage(
            Fames litora commodo turpis sit efficitur nisl ad curabitur malesuada,
            torquent nascetur lobortis natoque enim consequat nisi."),
         textInput("sample_input", label = "Sample Input", value = "Placeholder"),
+        br(),
         h2("Icons"),
         p(
           uiOutput("sampleIconCorrect", inline = TRUE),
@@ -51,6 +52,15 @@ ui <- dashboardPage(
         p(
           textOutput("output1")
         ),
+        br(),
+        h2("Typesetting"),
+        p("Vitae libero ipsum faucibus auctor bibendum \\(b_i\\)."),
+        p(id = "lorem"),
+        withMathJax(),
+        actionButton("insertLaTeX", "Insert LaTeX"),
+        actionButton("typeset", "Typeset"),
+        p(),
+        br(),
         actionButton("quit", "Quit")
       )
     )
@@ -66,6 +76,15 @@ server <- function(input, output, session) {
   message_for_status(connection$status)
   message("\n")
   
+  observeEvent(input$insertLaTeX, {
+    insertUI(
+      selector = "#lorem",
+      where = "beforeEnd",
+      ui = span(" \\(\\LaTeX\\)")
+    )
+  })
+  
+  observeEvent(input$typeset, typesetMath(session))
   observeEvent(input$quit, stopApp())
   
   output$sampleIconCorrect <- renderIcon("correct")

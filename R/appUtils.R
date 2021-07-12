@@ -370,3 +370,20 @@ getAppTitle <- function(case = "title", short = TRUE) {
   
   return(title)
 }
+
+#' typesetMath
+#'
+#' The Server component for retriggering MathJax's typesetting which is especially
+#' useful when you are updating inputs with mathematical expressions for quizzes
+#' and games.
+#'
+#' @param session Required--the shiny session for each instance
+#' @return Typeset LaTeX on page.
+#' 
+#' @examples
+#' typesetMath(session)
+#'
+#' @export
+typesetMath <- function(session) {
+  session$sendCustomMessage('typeset-mathjax', NA)
+}

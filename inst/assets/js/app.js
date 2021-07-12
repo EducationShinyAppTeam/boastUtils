@@ -25,6 +25,13 @@ $(function() {
     });
   });
   
+  // Typeset MathJax
+  Shiny.addCustomMessageHandler('typeset-mathjax', function(message) {
+    console.log('Calling');
+    
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);  
+  });
+  
   /**
    * Shiny bindings
    */
