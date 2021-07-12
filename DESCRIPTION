@@ -18,7 +18,7 @@ License: GPL-3.0+
 Encoding: UTF-8
 LazyData: true
 Depends: config, htmltools, httr, shiny (>= 0.11), shinydashboard
-Imports: rLocker (>= 0.2.4.4)
+Imports: rLocker (>= 0.2.5)
 Suggests: sofa, stringr
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
