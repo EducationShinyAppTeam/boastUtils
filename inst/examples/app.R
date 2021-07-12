@@ -42,15 +42,15 @@ ui <- dashboardPage(
            Fames litora commodo turpis sit efficitur nisl ad curabitur malesuada,
            torquent nascetur lobortis natoque enim consequat nisi."),
         textInput("sample_input", label = "Sample Input", value = "Placeholder"),
+        p(
+          textOutput("output1")
+        ),
         br(),
         h2("Icons"),
         p(
           uiOutput("sampleIconCorrect", inline = TRUE),
           uiOutput("sampleIconPartial", inline = TRUE),
           renderIcon("incorrect", width = 24, html = TRUE)
-        ),
-        p(
-          textOutput("output1")
         ),
         br(),
         h2("Typesetting"),
@@ -70,7 +70,7 @@ ui <- dashboardPage(
 # Define server logic required
 server <- function(input, output, session) {
   
-  output$output1 <- renderText({ input$focusedElement })
+  # output$output1 <- renderText({ input$focusedElement })
   
   message("\nrLocker status")
   message_for_status(connection$status)

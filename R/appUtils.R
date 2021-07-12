@@ -118,6 +118,34 @@ scripts <- function() {
   return(connection)
 }
 
+#' .bindInputEvents
+#' 
+#' App input observers
+.bindInputEvents <- function(session) {
+  observe({
+    # TODO: Make input list reactive and bind new observers only on creation
+    sapply(isolate(names(session$input)), function(i) {
+      observeEvent(session$input[[i]], {
+        .logInteraction(session, i)
+      }, ignoreNULL = TRUE, ignoreInit = TRUE, priority = -1)
+    })
+  })
+}
+
+#' .bindSessionEnd
+#' 
+#' App cleanup functions, does not trigger when running locally.
+.bindSessionEnd <- function(session) {
+  onSessionEnded(function() {
+    isolate({
+      # Ignore curl::curl_fetch_memory warnings caused by exiting too soon 
+      suppressWarnings({
+        .logSessionEnd(session)
+      })
+    })
+  })
+}
+
 #' getCurrentAddress
 #' 
 #' Returns current page address in session$clientData as validated url.

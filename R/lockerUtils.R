@@ -42,69 +42,58 @@ getLockerConfig <- function() {
   return(getOption("locker_config"))
 }
 
+#' .logInteraction
+#' 
 #' Learning Locker Statement Generation
-#' TODO: bind events to all fixed dashboard input items
-.bindInputEvents <- function(session) {
-  observe({
-    
-    # TODO: Make input list reactive and bind new observers only on creation
-    inputs <- session$input
-    
-    sapply(isolate(names(inputs)), function(input) {
-      observeEvent(inputs[[input]], {
-        stmt <- NA
-        
-        if (input == "tabs" || input == "tab" || input == "page" || input == "pages") {
-          stmt <- generateStatement(
-            session,
-            verb = "experienced",
-            object = paste0("shiny-tab-", inputs[[input]]),
-            description = paste0("Navigated to ", inputs[[input]], " tab.")
-          )
-        } else {
-          stmt <- generateStatement(
-            session,
-            verb = "interacted",
-            object = input,
-            description = paste0("Interacted with ", input, "."),
-            response = inputs[[input]]
-          )
-        }
-        try({
-          storeStatement(session, stmt)
-        })
-      }, ignoreNULL = TRUE, ignoreInit = TRUE, priority = -1)
-    })
+.logInteraction <- function(session, i) {
+  stmt <- NA
+  
+  if (i == "tabs" || i == "tab" || i == "page" || i == "pages") {
+    stmt <- generateStatement(
+      session,
+      verb = "experienced",
+      object = paste0("shiny-tab-", session$input[[i]]),
+      description = paste0("Navigated to ", session$input[[i]], " tab.")
+    )
+  } else {
+    stmt <- generateStatement(
+      session,
+      verb = "interacted",
+      object = i,
+      description = paste0("Interacted with ", i, "."),
+      response = session$input[[i]]
+    )
+  }
+  try({
+    storeStatement(session, stmt)
   })
 }
 
-#' App cleanup functions
-.bindSessionEnd <- function(session) {
-  onSessionEnded(function() {
-    isolate({
-      # Ignore curl::curl_fetch_memory warnings caused by exiting too soon 
-      suppressWarnings({
-        # Try to log when a user ends their session
-        response <- httr::POST(
-          url = "https://learning-locker.stat.vmhost.psu.edu/data/xAPI/statements", 
-          config = list(
-            add_headers(
-              "Auth" = getLockerConfig()$auth,
-              "Content-Type" = "application/json",
-              "X-Experience-API-Version" = "1.0.1"
-            ),
-            verbose = TRUE
-          ),
-          body = generateStatement(
-            session,
-            verb = "exited",
-            description = "Session has ended."
-          ),
-          encode = "json" 
-        )
-      })
-    })
-  })
+#' .logSessionEnd
+#' 
+#' Try to log when a user ends their session
+.logSessionEnd <- function(session) {
+  response <- httr::POST(
+    url = httr::build_url(
+      httr::parse_url(
+        paste0(getLockerConfig()$base_url, "/data/xAPI/statements")
+      )
+    ), 
+    config = list(
+      add_headers(
+        "Auth" = getLockerConfig()$auth,
+        "Content-Type" = "application/json",
+        "X-Experience-API-Version" = "1.0.1"
+      ),
+      verbose = TRUE
+    ),
+    body = generateStatement(
+      session,
+      verb = "exited",
+      description = "Session has ended."
+    ),
+    encode = "json" 
+  )
 }
 
 #' Generate Statement
@@ -169,7 +158,11 @@ generateStatement <- function(
       agent = agent,
       verb =  verb,
       object = list(
-        id = paste0(boastUtils::getCurrentAddress(session), object),
+        id = httr::build_url(
+          httr::parse_url(
+            paste0(boastUtils::getCurrentAddress(session), object)
+          )
+        ),
         name = name,
         description = description
       ),

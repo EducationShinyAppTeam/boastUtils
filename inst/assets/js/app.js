@@ -27,6 +27,7 @@ $(function() {
   
   // Typeset MathJax
   Shiny.addCustomMessageHandler('typeset-mathjax', function(message) {
+    /** @deprecated will need to update if shiny adopts MathJax 3.x */
     if(window.MathJax) MathJax.Hub.Queue(["Typeset", MathJax.Hub]);  
   });
   
