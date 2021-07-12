@@ -40,7 +40,7 @@ generateStatement(
 
 }
 \seealso{
-\link[rlocker]{getVerbList()}
+\link[rLocker]{getVerbList()}
 
-\link[rlocker]{getInteractionTypes()}
+\link[rLocker]{getInteractionTypes()}
 }

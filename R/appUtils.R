@@ -104,7 +104,7 @@ scripts <- function() {
   
   # Setup Learning Locker configuration
   .auth <- .getAuth()
-  .agent <- rlocker::createAgent()
+  .agent <- rLocker::createAgent()
   
   .lockerConfig <- list(
     base_url = "https://learning-locker.stat.vmhost.psu.edu/",
@@ -113,7 +113,7 @@ scripts <- function() {
   )
   
   # Initialize Learning Locker connection
-  connection <- rlocker::connect(session, .lockerConfig)
+  connection <- rLocker::connect(session, .lockerConfig)
 
   return(connection)
 }

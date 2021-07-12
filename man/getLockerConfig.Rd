@@ -23,5 +23,5 @@ getLockerConfig()
 Return Learning Locker configuration for current session.
 }
 \seealso{
-\link[rlocker]{get_locker_config()}
+\link[rLocker]{get_locker_config()}
 }

@@ -13,7 +13,7 @@ boastApp <- function(ui, server, config = NA) {
   Sys.setenv("XAPI_LOGGING" = logging)
   
   if(logging) {
-    library(rlocker)
+    library(rLocker)
   }
   
   # Setup app html template

@@ -35,7 +35,7 @@
 #' )
 #' ```
 #' 
-#' @seealso \link[rlocker]{get_locker_config()}
+#' @seealso \link[rLocker]{get_locker_config()}
 #' 
 #' @export
 getLockerConfig <- function() {
@@ -118,8 +118,8 @@ getLockerConfig <- function() {
 #'   completion = FALSE
 #' )
 #' 
-#' @seealso \link[rlocker]{getVerbList()}
-#' @seealso \link[rlocker]{getInteractionTypes()}
+#' @seealso \link[rLocker]{getVerbList()}
+#' @seealso \link[rLocker]{getInteractionTypes()}
 #' 
 #' @export
 generateStatement <- function(
@@ -198,7 +198,7 @@ generateStatement <- function(
       stmt[["result"]] <- NULL
     }
     
-    statement <- rlocker::createStatement(stmt)
+    statement <- rLocker::createStatement(stmt)
     
     return(statement)
   }, error = function(e) {
@@ -218,7 +218,7 @@ storeStatement <- function(session = NULL, statement = NA) {
   if(logging) {
     tryCatch({
       if(!is.na(statement) & statement != ""){
-        response <- rlocker::store(session, statement)
+        response <- rLocker::store(session, statement)
         return(response)
       } else {
         return(400)
