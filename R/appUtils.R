@@ -104,7 +104,7 @@ scripts <- function() {
   
   # Setup Learning Locker configuration
   .auth <- .getAuth()
-  .agent <- rlocker::createAgent()
+  .agent <- rLocker::createAgent()
   
   .lockerConfig <- list(
     base_url = "https://learning-locker.stat.vmhost.psu.edu/",
@@ -113,9 +113,37 @@ scripts <- function() {
   )
   
   # Initialize Learning Locker connection
-  connection <- rlocker::connect(session, .lockerConfig)
+  connection <- rLocker::connect(session, .lockerConfig)
 
   return(connection)
+}
+
+#' .bindInputEvents
+#' 
+#' App input observers
+.bindInputEvents <- function(session) {
+  observe({
+    # TODO: Make input list reactive and bind new observers only on creation
+    sapply(isolate(names(session$input)), function(i) {
+      observeEvent(session$input[[i]], {
+        .logInteraction(session, i)
+      }, ignoreNULL = TRUE, ignoreInit = TRUE, priority = -1)
+    })
+  })
+}
+
+#' .bindSessionEnd
+#' 
+#' App cleanup functions, does not trigger when running locally.
+.bindSessionEnd <- function(session) {
+  onSessionEnded(function() {
+    isolate({
+      # Ignore curl::curl_fetch_memory warnings caused by exiting too soon 
+      suppressWarnings({
+        .logSessionEnd(session)
+      })
+    })
+  })
 }
 
 #' getCurrentAddress
@@ -369,4 +397,21 @@ getAppTitle <- function(case = "title", short = TRUE) {
   # }
   
   return(title)
+}
+
+#' typesetMath
+#'
+#' The Server component for retriggering MathJax's typesetting which is especially
+#' useful when you are updating inputs with mathematical expressions for quizzes
+#' and games.
+#'
+#' @param session Required--the shiny session for each instance
+#' @return Typeset LaTeX on page.
+#' 
+#' @examples
+#' typesetMath(session)
+#'
+#' @export
+typesetMath <- function(session) {
+  session$sendCustomMessage('typeset-mathjax', NA)
 }
