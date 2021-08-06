@@ -1,5 +1,5 @@
 #' .onAttach
-#' 
+#'
 #' Create link to html assets for package usage.
 .onAttach <- function(...) {
   shiny::addResourcePath("app", system.file("assets/js/", package = "boastUtils"))
@@ -7,9 +7,9 @@
 }
 
 #' scripts
-#' 
+#'
 #' Used to attach scripts to DOM in template.html head.
-#' 
+#'
 #'@export
 scripts <- function() {
   # htmlDependency js and css will be used in other functions with attachDependency
@@ -25,15 +25,15 @@ scripts <- function() {
 }
 
 #' .injectBoastConfig
-#' 
-#' Injects boastApp configuration into the head of the default shinyApp server function; 
+#'
+#' Injects boastApp configuration into the head of the default shinyApp server function;
 #' occurs **before** shinyApp::onStart(). This is important to setup environment data so
 #' that it can be used within the default app.R/server.R server function. Expects shiny
 #' session to be passed on runtime.
 .injectBoastConfig <- function(server) {
-  
+
   body <- as.list(body(server))
-  
+
   # .boastInit is executed **after** shinyApp::onStart()
   call <- as.call(
     quote({
@@ -42,16 +42,16 @@ scripts <- function() {
   )
 
   body(server) <- as.call(append(body, call, 1))
-  
+
   return(server)
 }
 
 #' .boastInit
-#' 
+#'
 #' Initializes shinyApp state with BOAST specific utilities and
 #' environment variables.
 .boastInit <- function(session) {
-  
+
   tryCatch({
     if (class(session)[1] != "ShinySession") {
       stop(call. = FALSE)
@@ -62,27 +62,27 @@ scripts <- function() {
       APP_ROOT <- BASE_DIR
       Sys.setenv("APP_NAME" = APP_NAME)
       Sys.setenv("APP_ROOT" = APP_ROOT)
-      
+
       logging <- Sys.getenv("XAPI_LOGGING")
-      
+
       connection <- list(
         status = 501
       )
-        
+
       # Store connection details
       if(logging) {
-        connection <- boastUtils:::.boastConnect(session)  
+        connection <- boastUtils:::.boastConnect(session)
         boastUtils:::.bindInputEvents(session)
         boastUtils:::.bindSessionEnd(session)
       } else {
         message("xAPI Logging Disabled")
       }
-      
+
       # Store app metadata globally for shared use
       APP_META <<- getAppMeta()
-      
+
       return(connection)
-    }  
+    }
   }, error = function(e) {
     message(
       paste(
@@ -92,26 +92,26 @@ scripts <- function() {
       )
     )
   })
-  
+
   # Internal Server Error (HTTP 500).
   return(list("status" = 500))
 }
 
 #' .boastConnect
-#' 
+#'
 #' Setup asynchronous connection to Learning Record Store (LRS).
 .boastConnect <- function(session) {
-  
+
   # Setup Learning Locker configuration
   .auth <- .getAuth()
   .agent <- rLocker::createAgent()
-  
+
   .lockerConfig <- list(
     base_url = "https://learning-locker.stat.vmhost.psu.edu/",
     auth = .auth,
     agent = .agent
   )
-  
+
   # Initialize Learning Locker connection
   connection <- rLocker::connect(session, .lockerConfig)
 
@@ -119,7 +119,7 @@ scripts <- function() {
 }
 
 #' .bindInputEvents
-#' 
+#'
 #' App input observers
 .bindInputEvents <- function(session) {
   observe({
@@ -133,12 +133,12 @@ scripts <- function() {
 }
 
 #' .bindSessionEnd
-#' 
+#'
 #' App cleanup functions, does not trigger when running locally.
 .bindSessionEnd <- function(session) {
   onSessionEnded(function() {
     isolate({
-      # Ignore curl::curl_fetch_memory warnings caused by exiting too soon 
+      # Ignore curl::curl_fetch_memory warnings caused by exiting too soon
       suppressWarnings({
         .logSessionEnd(session)
       })
@@ -147,23 +147,23 @@ scripts <- function() {
 }
 
 #' getCurrentAddress
-#' 
+#'
 #' Returns current page address in session$clientData as validated url.
-#' 
-#' @usage 
+#'
+#' @usage
 #' getCurrentAddress(session)
-#' 
+#'
 #' @examples
 #' > getCurrentAddress(session)
 #' [1] "https://psu-eberly.shinyapps.io/Sample_App/#shiny-tab-challenge"
-#' 
+#'
 #' @return url
-#' 
+#'
 #'@export
 getCurrentAddress <- function(session) {
   port <- ifelse(is.null(session$clientData$url_port), NULL, paste0(":", session$clientData$url_port))
   path <- ifelse(is.null(port), sub("/$", "", session$clientData$url_pathname), session$clientData$url_pathname)
-  
+
   url <- httr::build_url(
     httr::parse_url(
       paste0(
@@ -175,19 +175,19 @@ getCurrentAddress <- function(session) {
       )
     )
   )
-  
+
   return(url)
 }
 
 #' isLocal
-#' 
+#'
 #' Check to see if current environment is local or shinyapps.io.
 #' Returns `TRUE` if local; `FALSE` if shinyapps.io.
-#' 
+#'
 #' @usage isLocal()
-#' 
+#'
 #' @return boolean
-#' 
+#'
 #' @export
 isLocal <- function() {
   status <- !nzchar(Sys.getenv("SHINY_PORT"))
@@ -195,17 +195,17 @@ isLocal <- function() {
 }
 
 #' getAppRoot
-#' 
+#'
 #' Returns the working directory set at startup.
-#' 
+#'
 #' Default deployed path is `/srv/connect/apps/<DIRECTORY_NAME>`.
-#' 
+#'
 #' @usage getAppRoot()
-#' 
+#'
 #' @examples
 #' > getAppRoot()
 #' [1] "/srv/connect/apps/Sample_App"
-#' 
+#'
 #' @seealso Sys.getenv("PWD") on shinyapps.io
 #' @return path
 #' @export
@@ -214,17 +214,17 @@ getAppRoot <- function() {
 }
 
 #' Retrieve App Identifier
-#' 
+#'
 #' Gets app id based on current deployed state
-#' 
+#'
 #' @export
 getAppIdentifier <- function() {
   DESCRIPTION <- file.path(getAppRoot(), "DESCRIPTION")
   id <- NA_character_
-  
+
   # Generate a temp uuid
   temp_uuid <- uuid::UUIDgenerate()
-  
+
   # Check if metadata file exists
   if(file.exists(DESCRIPTION)) {
     # Check to see if identifier is stored, if not, store it.
@@ -240,17 +240,17 @@ getAppIdentifier <- function() {
       paste(
         "DESCRIPTION metadata file not found, consider creating one. See:",
         "  https://github.com/rstudio/shiny-examples/blob/master/001-hello/DESCRIPTION",
-        sep = "\n"  
+        sep = "\n"
       )
     )
     id <- temp_uuid
   }
-  
+
   return(id)
 }
 
 #' Retrive config file
-#' 
+#'
 #' Gets properties set in boastUtils/config.yml
 .getConfig <- function() {
   install_path <- find.package("boastUtils")
@@ -259,10 +259,10 @@ getAppIdentifier <- function() {
 }
 
 #' Store app identifier
-#' 
+#'
 #' Writes Universally Unique ID (UUID) to App DESCRIPTION file in project root.
-#' 
-#' Assumes property does not exist in file already. 
+#'
+#' Assumes property does not exist in file already.
 .setAppIdentifier <- function(uuid) {
   UUID <- as.data.frame(uuid)
   success <- FALSE
@@ -280,22 +280,22 @@ getAppIdentifier <- function() {
 }
 
 #' Get metadata
-#' 
+#'
 #' Returns metadata stored in app's DESCRIPTION file.
-#' 
+#'
 #' @return list
-#' 
+#'
 #' @export
 getAppMeta <- function() {
   meta <- NA_character_
   tryCatch({
     # Get root directory of current app.
     APP_ROOT <- getAppRoot()
-    
+
     if (APP_ROOT != "") {
       # Set expected file path based on APP_ROOT directory.
       DESCRIPTION <- file.path(APP_ROOT, "DESCRIPTION")
-      
+
       # Check if DESCRIPTION file exists.
       if(file.exists(DESCRIPTION)) {
         # Read contents of DESCRIPTION file; empty file returns a <0 x 0 matrix>.
@@ -303,7 +303,7 @@ getAppMeta <- function() {
         con <- textConnection(shiny:::readUTF8(DESCRIPTION))
                on.exit(close(con), add = TRUE)
         contents <- read.dcf(con)
-        
+
         # If DESCRIPTION file has content, return it as a list.
         if(length(contents)) {
           cols <- colnames(contents)
@@ -321,12 +321,12 @@ getAppMeta <- function() {
               }, warning = function(cond) {
                 print(cond)
                 return(NULL)
-              })  
+              })
             }
             return(value)
           })
           names(meta) <- cols
-        }  
+        }
       } else {
         warning(
           paste("DESCRIPTION metadata file does not exist, please create one in your project root. Refer to:",
@@ -339,27 +339,27 @@ getAppMeta <- function() {
   }, error = function(cond) {
     return(NA)
   })
-  
+
   return(meta)
 }
 
 #' Get app title
-#' 
+#'
 #' Returns tile stored in app's DESCRIPTION file.
-#' 
+#'
 #' @usage getAppTitle()
-#' 
+#'
 #' @examples
 #' > getAppTitle()
 #' [1] "Sample App"
 #' > getAppTitle(short = FALSE, case = "snake")
 #' [1] "Sample_App__A_Lengthy_Title"
 #' @return character
-#' 
+#'
 #' @export
 getAppTitle <- function(case = "title", short = TRUE) {
   title <- NA_character_
-  
+
   # Check if APP_META is set; retrieve if not.
   meta <- NA
   if(!exists("APP_META")) {
@@ -367,7 +367,7 @@ getAppTitle <- function(case = "title", short = TRUE) {
   } else {
     meta <- APP_META
   }
-  
+
   # Check if metadata list contains data and is not all NA's.
   # If checking lists for NA you'll end up with:
   #   the condition has length > 1 and only the first element will be used
@@ -387,7 +387,7 @@ getAppTitle <- function(case = "title", short = TRUE) {
   } else {
     warning("Could not obtain metadata info.")
   }
-  
+
   # @deprecated warning
   # if(exists("APP_TITLE") || exists("APP_DESCP")) {
   #   message(
@@ -395,7 +395,7 @@ getAppTitle <- function(case = "title", short = TRUE) {
   #           "\n  https://educationshinyappteam.github.io/Style_Guide/coding.html#metadata")
   #   )
   # }
-  
+
   return(title)
 }
 
@@ -407,11 +407,70 @@ getAppTitle <- function(case = "title", short = TRUE) {
 #'
 #' @param session Required--the shiny session for each instance
 #' @return Typeset LaTeX on page.
-#' 
+#'
 #' @examples
 #' typesetMath(session)
 #'
 #' @export
 typesetMath <- function(session) {
   session$sendCustomMessage('typeset-mathjax', NA)
+}
+
+#' citeApp
+#'
+#' A function which will generate how an app should be cited. This function
+#' requires the presence of a DESCRIPTION file in the app's repository to run.
+#'
+#' @param metaData Required--use \code{getAppMeta()} to access the DESCRIPTION
+#' file from inside the app
+#' @return Character string of the app's citation
+#'
+#' @examples
+#' citeApp(getAppMeta())
+#'
+#' @export
+citeApp <- function(metaData) {
+  authors <- metaData$`Authors@R`
+
+  autDF <- data.frame(
+    family = unlist(authors$family),
+    given = unlist(authors$given)
+  )
+
+  for (i in 1:nrow(autDF)) {
+    autDF$role[i] <- paste(authors[i]$role, collapse = ",")
+  }
+
+  autDF <- autDF[-which(autDF$role == "ctb"),]
+  autDF$given <- sapply(
+    X = autDF$given,
+    FUN = function(x) {
+      if (x == "Dennis") {
+        fI <- "D. K."
+      } else if (x == "Neil") {
+        fI <- "N. J."
+      } else {
+        fI <- paste0(substr(x, start = 1, stop = 1), ".")
+      }
+      return(fI)
+    }
+  )
+
+  autDF$name <- sapply(
+    X = 1:nrow(autDF),
+    FUN = function(x) {
+      paste(autDF$family[x], autDF$given[x], sep = ", ")
+    }
+  )
+
+  listing <- paste0(
+    paste(autDF$name[1:(nrow(autDF) - 1)], collapse = ", "),
+    paste(", and", autDF$name[nrow(autDF)]),
+    paste0(" (", substr(metaData$Date, 1, 4), "). "),
+    paste0(metaData$Title, ". "),
+    "[R Shiny app]. Available ",
+    metaData$URL
+  )
+
+  return(listing)
 }
