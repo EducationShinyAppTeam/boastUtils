@@ -4,11 +4,7 @@
 \alias{citeApp}
 \title{citeApp}
 \usage{
-citeApp(metaData)
-}
-\arguments{
-\item{metaData}{Required--use \code{getAppMeta()} to access the DESCRIPTION
-file from inside the app}
+citeApp()
 }
 \value{
 Character string of the app's citation
@@ -18,6 +14,8 @@ A function which will generate how an app should be cited. This function
 requires the presence of a DESCRIPTION file in the app's repository to run.
 }
 \examples{
-citeApp(getAppMeta())
+citeApp()
+
+[1] "Carey, R., and Hatfield, N. J. (2021). BOAST Utilities. [R Shiny app]. Available https://github.com/EducationShinyAppTeam/boastUtils"
 
 }

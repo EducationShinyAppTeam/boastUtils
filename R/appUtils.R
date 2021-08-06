@@ -210,7 +210,16 @@ isLocal <- function() {
 #' @return path
 #' @export
 getAppRoot <- function() {
-  return(Sys.getenv("APP_ROOT"))
+  APP_ROOT <- NA
+  
+  if(isLocal()) {
+    # Assume current working directory is the app root.
+    APP_ROOT <- getwd()
+  } else {
+    APP_ROOT <- Sys.getenv("APP_ROOT")  
+  }
+  
+  return(APP_ROOT)
 }
 
 #' Retrieve App Identifier
@@ -420,57 +429,87 @@ typesetMath <- function(session) {
 #'
 #' A function which will generate how an app should be cited. This function
 #' requires the presence of a DESCRIPTION file in the app's repository to run.
-#'
-#' @param metaData Required--use \code{getAppMeta()} to access the DESCRIPTION
-#' file from inside the app
+#' 
 #' @return Character string of the app's citation
 #'
 #' @examples
-#' citeApp(getAppMeta())
+#' citeApp()
+#' 
+#' [1] "Carey, R., and Hatfield, N. J. (2021). BOAST Utilities. [R Shiny app]. Available https://github.com/EducationShinyAppTeam/boastUtils"
 #'
 #' @export
-citeApp <- function(metaData) {
-  authors <- metaData$`Authors@R`
-
-  autDF <- data.frame(
-    family = unlist(authors$family),
-    given = unlist(authors$given)
-  )
-
-  for (i in 1:nrow(autDF)) {
-    autDF$role[i] <- paste(authors[i]$role, collapse = ",")
-  }
-
-  autDF <- autDF[-which(autDF$role == "ctb"),]
-  autDF$given <- sapply(
-    X = autDF$given,
-    FUN = function(x) {
-      if (x == "Dennis") {
-        fI <- "D. K."
-      } else if (x == "Neil") {
-        fI <- "N. J."
-      } else {
-        fI <- paste0(substr(x, start = 1, stop = 1), ".")
+citeApp <- function() {
+  metaData <- getAppMeta()
+  
+  tryCatch({
+    if(length(metaData) >= 1 && !is.na(metaData)) {
+      authors <- "<<MISSING_AUTHORS@R>>"
+      if(!is.null(metaData$`Authors@R`)) {
+        autDF <- data.frame(
+          family = unlist(metaData$`Authors@R`$family),
+          given = unlist(metaData$`Authors@R`$given)
+        )
+      
+        for (i in 1:nrow(autDF)) {
+          autDF$role[i] <- paste(metaData$`Authors@R`[i]$role, collapse = ",")
+        }
+      
+        # Remove contributors if they exist in meta
+        ctb <- which(autDF$role == "ctb")
+        if(length(ctb)) {
+          autDF <- autDF[-ctb,]   
+        }
+        
+        autDF$given <- sapply(
+          X = autDF$given,
+          FUN = function(x) {
+            if (x == "Dennis") {
+              fI <- "D. K."
+            } else if (x == "Neil") {
+              fI <- "N. J."
+            } else {
+              fI <- paste0(substr(x, start = 1, stop = 1), ".")
+            }
+            return(fI)
+          }
+        )
+      
+        autDF$name <- sapply(
+          X = 1:nrow(autDF),
+          FUN = function(x) {
+            paste(autDF$family[x], autDF$given[x], sep = ", ")
+          }
+        )
+        
+        authors <- autDF
       }
-      return(fI)
+        
+      year <- ifelse(!is.null(metaData$Date), substr(metaData$Date, 1, 4), "<<MISSING_DATE>>")
+      title <- ifelse(!is.null(metaData$Title), metaData$Title, "<<MISSING_TITLE>>")
+      url <- ifelse(!is.null(metaData$URL), metaData$URL, "<<MISSING_URL>>")  
+      
+      listing <- paste0(
+        ifelse(nrow(authors) > 1, {
+          paste0(
+            paste(authors$name[1:(nrow(authors) - 1)], collapse = ", "),
+            ", and ", authors$name[nrow(authors)]
+          )
+        }, authors$name),
+        paste0(" (", year, "). "),
+        paste0(title, ". "),
+        "[R Shiny app]. Available ",
+        url
+      )
+      
+      if(grepl("<<MISSING_", listing)) {
+        warning(paste("Missing metadata detected please see: https://github.com/EducationShinyAppTeam/App_Template/blob/master/DESCRIPTION\n ",listing))   
+      }
+      
+      return(listing)
+    } else {
+      warning("Unable to cite app, please check warnings.")
     }
-  )
-
-  autDF$name <- sapply(
-    X = 1:nrow(autDF),
-    FUN = function(x) {
-      paste(autDF$family[x], autDF$given[x], sep = ", ")
-    }
-  )
-
-  listing <- paste0(
-    paste(autDF$name[1:(nrow(autDF) - 1)], collapse = ", "),
-    paste(", and", autDF$name[nrow(autDF)]),
-    paste0(" (", substr(metaData$Date, 1, 4), "). "),
-    paste0(metaData$Title, ". "),
-    "[R Shiny app]. Available ",
-    metaData$URL
-  )
-
-  return(listing)
+  }, warning = function(cond) {
+    warning(cond)
+  })
 }
