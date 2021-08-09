@@ -2,6 +2,7 @@
 
 export(boastApp)
 export(boastPalette)
+export(citeApp)
 export(complianceLinks)
 export(copyrightInfo)
 export(generateStatement)
