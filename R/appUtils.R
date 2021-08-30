@@ -216,7 +216,14 @@ getAppRoot <- function() {
     # Assume current working directory is the app root.
     APP_ROOT <- getwd()
   } else {
-    APP_ROOT <- Sys.getenv("APP_ROOT")  
+    APP_ROOT <- Sys.getenv("APP_ROOT")
+    
+    # Check env has been initialized yet
+    if(APP_ROOT == "") {
+      BASE_DIR <- normalizePath(getwd())
+      APP_NAME <- basename(BASE_DIR)
+      APP_ROOT <- BASE_DIR
+    }
   }
   
   return(APP_ROOT)
