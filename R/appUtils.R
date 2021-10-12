@@ -60,6 +60,7 @@ scripts <- function() {
       BASE_DIR <- normalizePath(getwd())
       APP_NAME <- basename(BASE_DIR)
       APP_ROOT <- BASE_DIR
+
       Sys.setenv("APP_NAME" = APP_NAME)
       Sys.setenv("APP_ROOT" = APP_ROOT)
       
@@ -80,6 +81,20 @@ scripts <- function() {
       
       # Store app metadata globally for shared use
       APP_META <<- getAppMeta()
+      
+      observeEvent(session$input$eventListener, {
+        if(session$input$eventListener == "diagnostics") {
+          showModal(modalDialog(
+            title = "App Diagnostics",
+            renderDiagnostics(session),
+            size = "l",
+            footer = tagList(
+              modalButton("Close")
+            )
+          ))
+          updateTextInput(session, "eventListener", value = "")
+        }
+      })
       
       return(connection)
     }  
@@ -371,7 +386,7 @@ getAppTitle <- function(case = "title", short = TRUE) {
   # Check if metadata list contains data and is not all NA's.
   # If checking lists for NA you'll end up with:
   #   the condition has length > 1 and only the first element will be used
-  if(!is.na(all(is.na(meta)))) {
+  if(!all(is.na(meta))) {
     title <- ifelse(short, meta$ShortName, meta$Title)
     if(!is.na(title)) {
       # We are just going to assume it is in title case already (because it should be).
@@ -414,4 +429,14 @@ getAppTitle <- function(case = "title", short = TRUE) {
 #' @export
 typesetMath <- function(session) {
   session$sendCustomMessage('typeset-mathjax', NA)
+}
+
+renderDiagnostics <- function(session) {
+  tagList(
+    tags$details(tags$summary("clientData"), renderPrint({ reactiveValuesToList(session$clientData) })),
+    tags$details(tags$summary("env"), renderPrint({ Sys.getenv() })),
+    tags$details(tags$summary("input"), renderPrint({ reactiveValuesToList(session$input) })),
+    tags$details(tags$summary("memory"), renderPrint({ gc() })),
+    tags$details(tags$summary("sessionInfo"), renderPrint({ sessionInfo() }))
+  )
 }

@@ -31,6 +31,14 @@ $(function() {
     if(window.MathJax) MathJax.Hub.Queue(["Typeset", MathJax.Hub]);  
   });
   
+  // Diagnostics
+  document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'd') {
+      Shiny.onInputChange("eventListener", 'diagnostics');
+      setTimeout(function() {Shiny.onInputChange("eventListener", '');}, 1000);
+    }
+  });
+  
   /**
    * Shiny bindings
    */
