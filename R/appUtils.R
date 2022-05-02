@@ -458,7 +458,7 @@ citeApp <- function() {
   metaData <- getAppMeta()
   
   tryCatch({
-    if(length(metaData) >= 1 && !is.na(metaData)) {
+    if(!is.na(metaData) && length(metaData) >= 1) {
       authors <- "<<MISSING_AUTHORS@R>>"
       if(!is.null(metaData$`Authors@R`)) {
         autDF <- data.frame(
