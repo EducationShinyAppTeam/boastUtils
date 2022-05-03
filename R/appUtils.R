@@ -417,7 +417,7 @@ getAppTitle <- function(case = "title", short = TRUE) {
 #'
 #' @export
 typesetMath <- function(session) {
-  shiny::session$sendCustomMessage('typeset-mathjax', NA)
+  session$sendCustomMessage('typeset-mathjax', NA)
 }
 
 #' renderDiagnostics
