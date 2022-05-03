@@ -12,9 +12,3 @@ A pie chart of palette colors.
 \description{
 Used to quickly visualize what color options are available in a given palette.
 }
-\examples{
-showPalette()
-showPalette(psuPalette)
-showPalette(psuPalette[2])
-
-}

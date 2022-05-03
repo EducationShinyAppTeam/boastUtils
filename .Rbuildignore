@@ -4,3 +4,4 @@
 rsconnect/*
 .travis.yml
 node_modules/*
+^LICENSE\.md$

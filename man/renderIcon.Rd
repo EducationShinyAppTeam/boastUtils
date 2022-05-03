@@ -19,8 +19,3 @@ renderIcon(icon = "default", width = 36, html = FALSE)
 \description{
 Icons for Apps
 }
-\examples{
-renderIcon("correct")
-renderIcon("incorrect", width = 25, html = TRUE)
-
-}

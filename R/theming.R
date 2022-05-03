@@ -11,9 +11,6 @@ NULL
 #'
 #' @return A palette
 #'
-#' @examples
-#' showPalette(boastPalette)
-#'
 #' @export
 boastPalette <- c(
   "#0072B2",
@@ -34,9 +31,6 @@ boastPalette <- c(
 #'
 #' @return A palette
 #'
-#' @examples
-#' showPalette(psuPalette)
-#'
 #' @export
 psuPalette <- c(
   "#1E407C",
@@ -55,16 +49,11 @@ psuPalette <- c(
 #' 
 #' @return A pie chart of palette colors.
 #'
-#' @examples
-#' showPalette()
-#' showPalette(psuPalette)
-#' showPalette(psuPalette[2])
-#' 
 #' @export
 showPalette <- function(palette = boastPalette){
   name <- deparse(substitute(palette))
   wedgeLabels <- c()
-  for (i in 1:length(palette)) {
+  for (i in seq_len(length(palette))) {
     wedgeLabels[i] <- paste(
       paste0(name, "[", i, "]"),
       palette[i],
@@ -127,7 +116,7 @@ psu_eberly_logo <- function(style = "default"){
 
   colors <- logo_colors(style)
 
-  logo <- HTML(
+  logo <- shiny::HTML(
     paste0('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="33 33 400 87">
       <style>
         svg .hoverfill {
@@ -185,7 +174,7 @@ psu_logo <- function(style = "default"){
   
   colors <- logo_colors(style)
   
-  logo <- HTML(
+  logo <- shiny::HTML(
     paste0('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 259.48 81.66">
         <defs><style>.cls-1{fill:#fff}</style></defs>
         <title>
@@ -230,7 +219,7 @@ psu_logo <- function(style = "default"){
 #' @seealso \href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{https://creativecommons.org/licenses/by-nc-sa/4.0/}
 #' @export
 copyrightInfo <- function() {
-  license <- HTML(
+  license <- shiny::HTML(
     '<div id="licensing">
       <h2>Licensing</h2>
       <p>Except where otherwise noted, content on this app is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>.</p>
@@ -262,10 +251,6 @@ copyrightInfo <- function() {
 #'
 #' @return <shiny.render.function> or html
 #'
-#' @examples
-#' renderIcon("correct")
-#' renderIcon("incorrect", width = 25, html = TRUE)
-#'
 #' @export
 renderIcon <- function(icon = "default", width = 36, html = FALSE){
 
@@ -278,17 +263,17 @@ renderIcon <- function(icon = "default", width = 36, html = FALSE){
   markup <- ""
 
   if (icon == "correct") {
-     markup <- img(src = "icons/correct.png", alt = "Success, you are correct", width = width)
+     markup <- shiny::img(src = "icons/correct.png", alt = "Success, you are correct", width = width)
   } else if(icon == "incorrect") {
-    markup <- img(src = "icons/incorrect.png", alt = "Sorry, you are incorrect; please check the feedback", width = width)
+    markup <- shiny::img(src = "icons/incorrect.png", alt = "Sorry, you are incorrect; please check the feedback", width = width)
   } else if(icon == "partial") {
-    markup <- img(src = "icons/partial.png", alt = "You're partially correct; please check the feedback", width = width)
+    markup <- shiny::img(src = "icons/partial.png", alt = "You're partially correct; please check the feedback", width = width)
   } else {
     # default
   }
 
   if (!html) {
-    renderUI(markup)
+    shiny::renderUI(markup)
   } else {
     return(markup)
   }
@@ -300,12 +285,7 @@ renderIcon <- function(icon = "default", width = 36, html = FALSE){
 #' @param markup Return link as markup or plain-text
 #' 
 #' @return UI Element or Text
-#' 
-#' @examples
-#' surveyLink()
-#' surveyLink(name = "App_Name")
-#' surveyLink(markup = FALSE)
-#' 
+#'
 #' @export
 surveyLink <- function(name = NA, markup = TRUE) {
   appName <- ""
@@ -320,7 +300,7 @@ surveyLink <- function(name = NA, markup = TRUE) {
   link <- paste0("https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=", htmltools::urlEncodePath(appName))
   
   if(markup) {
-    link <- tags$a(target = "_blank", icon("comments"), href = link)  
+    link <- shiny::tags$a(target = "_blank", shiny::icon("comments"), href = link)  
   }
   
   return(link)
@@ -330,15 +310,12 @@ surveyLink <- function(name = NA, markup = TRUE) {
 #' 
 #' @return UI Element
 #' 
-#' @examples
-#' complianceLinks()
-#' 
 #' @export
 complianceLinks <- function() {
-  markup <- tags$ul(class = "legal-links list-inline small",
-    tags$li(tags$a(href = "mailto:boast-project@psu.edu", "Contact")),
-    tags$li(tags$a(target = "_blank", href = "https://www.psu.edu/web-privacy-statement/", "Privacy")),
-    tags$li(tags$a(target = "_blank", href = "https://www.psu.edu/accessibilitystatement/", "Accessibility")),
+  markup <- shiny::tags$ul(class = "legal-links list-inline small",
+    shiny::tags$li(shiny::tags$a(href = "mailto:boast-project@psu.edu", "Contact")),
+    shiny::tags$li(shiny::tags$a(target = "_blank", href = "https://www.psu.edu/web-privacy-statement/", "Privacy")),
+    shiny::tags$li(shiny::tags$a(target = "_blank", href = "https://www.psu.edu/accessibilitystatement/", "Accessibility")),
   )
 }
 
@@ -346,12 +323,9 @@ complianceLinks <- function() {
 #' 
 #' @return UI Element
 #' 
-#' @examples
-#' sidebarFooter()
-#' 
 #' @export
 sidebarFooter <- function() {
-  footer <- tags$div(class = "sidebar-footer",
+  footer <- shiny::tags$div(class = "sidebar-footer",
     psu_eberly_logo("reversed"),
     complianceLinks()
   )

@@ -1,26 +1,19 @@
 Package: boastUtils
-Type: Package
 Title: BOAST Utilities
-Description: R Package for common BOAST Project utilities
-Version: 0.1.12.1
-Date: 2022-05-02
+Description: R Package for common BOAST Project utilities.
+Version: 0.1.12.2
+Date: 2022-05-03
 Authors@R: c(
   person("Robert", "Carey", email = "rpc5102@psu.edu", role = c("aut", "cre")),
   person("Neil", "Hatfield", email = "njh5464@psu.edu", role = "aut")
   )
 Maintainer: Robert Carey <rpc5102@psu.edu>
-LearningObjectives: c(
-    "The student will learn to understand Concept A in way z.",
-    "The student will learn to understand Concept B as description y"
-  )
 URL: https://github.com/EducationShinyAppTeam/boastUtils
 BugReports: https://github.com/EducationShinyAppTeam/boastUtils/issues
-License: GPL-3.0+
+License: GPL (>= 3)
 Encoding: UTF-8
-LazyData: true
-Depends: config, htmltools, httr, shiny (>= 0.11), shinydashboard
+Depends: R (>= 4.0.0), config, htmltools, httr, shiny (>= 1.7.1), shinydashboard
 Imports: rLocker (>= 0.2.5)
-Suggests: sofa, stringr
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 Remotes: EducationShinyAppTeam/rLocker

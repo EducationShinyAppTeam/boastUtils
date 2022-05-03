@@ -16,10 +16,6 @@ A palette
 \description{
 Based on the Wong Color Blind Set
 }
-\examples{
-showPalette(boastPalette)
-
-}
 \seealso{
 \href{https://www.nature.com/articles/nmeth.1618}{https://www.nature.com/articles/nmeth.1618}
 }

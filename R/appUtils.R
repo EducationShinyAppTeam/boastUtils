@@ -80,19 +80,19 @@ scripts <- function() {
       }
       
       # Store app metadata globally for shared use
-      APP_META <<- getAppMeta()
+      #APP_META <<- getAppMeta()
       
-      observeEvent(session$input$eventListener, {
+      shiny::observeEvent(session$input$eventListener, {
         if(session$input$eventListener == "diagnostics") {
-          showModal(modalDialog(
+          shiny::showModal(shiny::modalDialog(
             title = "App Diagnostics",
             renderDiagnostics(session),
             size = "l",
-            footer = tagList(
-              modalButton("Close")
+            footer = shiny::tagList(
+              shiny::modalButton("Close")
             )
           ))
-          updateTextInput(session, "eventListener", value = "")
+          shiny::updateTextInput(session, "eventListener", value = "")
         }
       })
       
@@ -137,10 +137,10 @@ scripts <- function() {
 #' 
 #' App input observers
 .bindInputEvents <- function(session) {
-  observe({
+  shiny::observe({
     # TODO: Make input list reactive and bind new observers only on creation
-    sapply(isolate(names(session$input)), function(i) {
-      observeEvent(session$input[[i]], {
+    sapply(shiny::isolate(names(session$input)), function(i) {
+      shiny::observeEvent(session$input[[i]], {
         .logInteraction(session, i)
       }, ignoreNULL = TRUE, ignoreInit = TRUE, priority = -1)
     })
@@ -151,8 +151,8 @@ scripts <- function() {
 #' 
 #' App cleanup functions, does not trigger when running locally.
 .bindSessionEnd <- function(session) {
-  onSessionEnded(function() {
-    isolate({
+  shiny::onSessionEnded(function() {
+    shiny::isolate({
       # Ignore curl::curl_fetch_memory warnings caused by exiting too soon 
       suppressWarnings({
         .logSessionEnd(session)
@@ -164,13 +164,10 @@ scripts <- function() {
 #' getCurrentAddress
 #' 
 #' Returns current page address in session$clientData as validated url.
+#' Example: "https://psu-eberly.shinyapps.io/Sample_App/#shiny-tab-challenge"
 #' 
 #' @usage 
 #' getCurrentAddress(session)
-#' 
-#' @examples
-#' > getCurrentAddress(session)
-#' [1] "https://psu-eberly.shinyapps.io/Sample_App/#shiny-tab-challenge"
 #' 
 #' @return url
 #' 
@@ -214,14 +211,12 @@ isLocal <- function() {
 #' Returns the working directory set at startup.
 #' 
 #' Default deployed path is `/srv/connect/apps/<DIRECTORY_NAME>`.
+#' Example: "/srv/connect/apps/Sample_App"
 #' 
 #' @usage getAppRoot()
 #' 
-#' @examples
-#' > getAppRoot()
-#' [1] "/srv/connect/apps/Sample_App"
-#' 
 #' @seealso Sys.getenv("PWD") on shinyapps.io
+#' 
 #' @return path
 #' @export
 getAppRoot <- function() {
@@ -364,11 +359,6 @@ getAppMeta <- function() {
 #' 
 #' @usage getAppTitle()
 #' 
-#' @examples
-#' > getAppTitle()
-#' [1] "Sample App"
-#' > getAppTitle(short = FALSE, case = "snake")
-#' [1] "Sample_App__A_Lengthy_Title"
 #' @return character
 #' 
 #' @export
@@ -423,21 +413,26 @@ getAppTitle <- function(case = "title", short = TRUE) {
 #' @param session Required--the shiny session for each instance
 #' @return Typeset LaTeX on page.
 #' 
-#' @examples
-#' typesetMath(session)
+#' @usage typesetMath(session)
 #'
 #' @export
 typesetMath <- function(session) {
-  session$sendCustomMessage('typeset-mathjax', NA)
+  shiny::session$sendCustomMessage('typeset-mathjax', NA)
 }
 
+#' renderDiagnostics
+#' 
+#' Diagnostics for testing running apps
+#' 
+#' @importFrom utils sessionInfo
+#' 
 renderDiagnostics <- function(session) {
-  tagList(
-    tags$details(tags$summary("clientData"), renderPrint({ reactiveValuesToList(session$clientData) })),
-    tags$details(tags$summary("env"), renderPrint({ Sys.getenv() })),
-    tags$details(tags$summary("input"), renderPrint({ reactiveValuesToList(session$input) })),
-    tags$details(tags$summary("memory"), renderPrint({ gc() })),
-    tags$details(tags$summary("sessionInfo"), renderPrint({ sessionInfo() }))
+  shiny::tagList(
+    shiny::tags$details(shiny::tags$summary("clientData"), shiny::renderPrint({ shiny::reactiveValuesToList(session$clientData) })),
+    shiny::tags$details(shiny::tags$summary("env"), shiny::renderPrint({ Sys.getenv() })),
+    shiny::tags$details(shiny::tags$summary("input"), shiny::renderPrint({ shiny::reactiveValuesToList(session$input) })),
+    shiny::tags$details(shiny::tags$summary("memory"), shiny::renderPrint({ gc() })),
+    shiny::tags$details(shiny::tags$summary("sessionInfo"), shiny::renderPrint({ sessionInfo() }))
   )
 }
 
@@ -447,12 +442,7 @@ renderDiagnostics <- function(session) {
 #' requires the presence of a DESCRIPTION file in the app's repository to run.
 #' 
 #' @return Character string of the app's citation
-#'
-#' @examples
-#' citeApp()
 #' 
-#' [1] "Carey, R., and Hatfield, N. J. (2021). BOAST Utilities. [R Shiny app]. Available https://github.com/EducationShinyAppTeam/boastUtils"
-#'
 #' @export
 citeApp <- function() {
   metaData <- getAppMeta()
@@ -466,7 +456,7 @@ citeApp <- function() {
           given = unlist(metaData$`Authors@R`$given)
         )
         
-        for (i in 1:nrow(autDF)) {
+        for (i in seq_len(autDF)) {
           autDF$role[i] <- paste(metaData$`Authors@R`[i]$role, collapse = ",")
         }
         
@@ -491,7 +481,7 @@ citeApp <- function() {
         )
         
         autDF$name <- sapply(
-          X = 1:nrow(autDF),
+          X = seq_len(nrow(autDF)),
           FUN = function(x) {
             paste(autDF$family[x], autDF$given[x], sep = ", ")
           }

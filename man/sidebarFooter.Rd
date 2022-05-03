@@ -12,7 +12,3 @@ UI Element
 \description{
 sidebarFooter
 }
-\examples{
-sidebarFooter()
-
-}

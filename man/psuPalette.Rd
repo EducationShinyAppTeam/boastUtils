@@ -16,10 +16,6 @@ A palette
 \description{
 Based on Penn State's three official color palettes.
 }
-\examples{
-showPalette(psuPalette)
-
-}
 \seealso{
 \href{https://brand.psu.edu/design-essentials.html#color}{https://brand.psu.edu/}
 }

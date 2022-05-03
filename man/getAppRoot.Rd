@@ -14,11 +14,7 @@ Returns the working directory set at startup.
 }
 \details{
 Default deployed path is \verb{/srv/connect/apps/<DIRECTORY_NAME>}.
-}
-\examples{
-> getAppRoot()
-[1] "/srv/connect/apps/Sample_App"
-
+Example: "/srv/connect/apps/Sample_App"
 }
 \seealso{
 Sys.getenv("PWD") on shinyapps.io

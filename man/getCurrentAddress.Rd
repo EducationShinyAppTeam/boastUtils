@@ -11,9 +11,5 @@ url
 }
 \description{
 Returns current page address in session$clientData as validated url.
-}
-\examples{
-> getCurrentAddress(session)
-[1] "https://psu-eberly.shinyapps.io/Sample_App/#shiny-tab-challenge"
-
+Example: "https://psu-eberly.shinyapps.io/Sample_App/#shiny-tab-challenge"
 }

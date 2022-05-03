@@ -35,7 +35,7 @@
 #' )
 #' ```
 #' 
-#' @seealso \link[rLocker]{get_locker_config()}
+#' @seealso \code{\link[rLocker]{get_locker_config()}}
 #' 
 #' @export
 getLockerConfig <- function() {
@@ -80,7 +80,7 @@ getLockerConfig <- function() {
       )
     ), 
     config = list(
-      add_headers(
+      httr::add_headers(
         "Auth" = getLockerConfig()$auth,
         "Content-Type" = "application/json",
         "X-Experience-API-Version" = "1.0.1"
@@ -99,27 +99,6 @@ getLockerConfig <- function() {
 #' Generate Statement
 #' 
 #' Create an xAPI Statement using rLocker
-#' 
-#' @examples 
-#' generateStatement(
-#'   session,
-#'   verb = "answered",
-#'   object = "SAMPLE_QUESTION_ID",
-#'   description = "SAMPLE_QUESTION_OUTPUT",
-#'   interactionType = "choice",
-#'   response = "SAMPLE_RESPONSE",
-#'   success = c(TRUE, FALSE),
-#'   score = list(
-#'     min = 0,
-#'     max = 100,
-#'     raw = 35,
-#'     scaled = 0.35
-#'   ),
-#'   completion = FALSE
-#' )
-#' 
-#' @seealso \link[rLocker]{getVerbList()}
-#' @seealso \link[rLocker]{getInteractionTypes()}
 #' 
 #' @export
 generateStatement <- function(
@@ -233,23 +212,23 @@ storeStatement <- function(session = NULL, statement = NA) {
 
 # WIP Not yet finalized
 # TODO: Find if possible to get input type radio vs select vs text
-.renderInputDebugger <- function(session) {
-  
-  input <- session$input
-  output <- session$output
-  
-  Inputs <- reactive({
-    inputs <- NULL
-    values <- NULL
-    
-    for(i in seq_len(length(names(input)))){
-      values <- paste(names(input)[i], input[[names(input)[i]]])
-      inputs <- append(inputs, values)
-    }
-    inputs
-  })
-  
-  output$inputDebugger <- renderTable({
-    Inputs()
-  })
-}
+# .renderInputDebugger <- function(session) {
+#   
+#   input <- session$input
+#   output <- session$output
+#   
+#   Inputs <- reactive({
+#     inputs <- NULL
+#     values <- NULL
+#     
+#     for(i in seq_len(length(names(input)))){
+#       values <- paste(names(input)[i], input[[names(input)[i]]])
+#       inputs <- append(inputs, values)
+#     }
+#     inputs
+#   })
+#   
+#   output$inputDebugger <- renderTable({
+#     Inputs()
+#   })
+# }

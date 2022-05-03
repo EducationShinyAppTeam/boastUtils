@@ -13,15 +13,15 @@ boastApp <- function(ui, server, config = NA) {
   Sys.setenv("XAPI_LOGGING" = logging)
   
   if(logging) {
-    library(rLocker)
+    requireNamespace("rLocker", quietly = TRUE)
   }
   
   # Setup app html template
-  shinyUI <- htmlTemplate(
+  shinyUI <- shiny::htmlTemplate(
     system.file("templates", "template.html", package = "boastUtils"),
     document_ = TRUE,
     body = ui
   )
 
-  shinyApp(shinyUI, .injectBoastConfig(server))
+  shiny::shinyApp(shinyUI, .injectBoastConfig(server))
 }

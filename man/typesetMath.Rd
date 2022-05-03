@@ -17,7 +17,3 @@ The Server component for retriggering MathJax's typesetting which is especially
 useful when you are updating inputs with mathematical expressions for quizzes
 and games.
 }
-\examples{
-typesetMath(session)
-
-}

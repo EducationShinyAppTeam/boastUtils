@@ -17,9 +17,3 @@ UI Element or Text
 \description{
 surveyLink
 }
-\examples{
-surveyLink()
-surveyLink(name = "App_Name")
-surveyLink(markup = FALSE)
-
-}

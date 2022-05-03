@@ -20,27 +20,3 @@ generateStatement(
 \description{
 Create an xAPI Statement using rLocker
 }
-\examples{
-generateStatement(
-  session,
-  verb = "answered",
-  object = "SAMPLE_QUESTION_ID",
-  description = "SAMPLE_QUESTION_OUTPUT",
-  interactionType = "choice",
-  response = "SAMPLE_RESPONSE",
-  success = c(TRUE, FALSE),
-  score = list(
-    min = 0,
-    max = 100,
-    raw = 35,
-    scaled = 0.35
-  ),
-  completion = FALSE
-)
-
-}
-\seealso{
-\link[rLocker]{getVerbList()}
-
-\link[rLocker]{getInteractionTypes()}
-}
