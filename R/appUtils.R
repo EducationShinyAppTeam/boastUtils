@@ -456,7 +456,7 @@ citeApp <- function() {
           given = unlist(metaData$`Authors@R`$given)
         )
         
-        for (i in seq_len(autDF)) {
+        for (i in seq_len(nrow(autDF))) {
           autDF$role[i] <- paste(metaData$`Authors@R`[i]$role, collapse = ",")
         }
         
