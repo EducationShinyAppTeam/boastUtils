@@ -1,8 +1,8 @@
 Package: boastUtils
 Title: BOAST Utilities
 Description: R Package for common BOAST Project utilities.
-Version: 0.1.12.3
-Date: 2022-05-19
+Version: 0.1.12.4
+Date: 2022-06-30
 Authors@R: c(
   person("Robert", "Carey", email = "rpc5102@psu.edu", role = c("aut", "cre")),
   person("Neil", "Hatfield", email = "njh5464@psu.edu", role = "aut")
