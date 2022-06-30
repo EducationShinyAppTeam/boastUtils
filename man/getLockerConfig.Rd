@@ -7,7 +7,7 @@
 getLockerConfig()
 }
 \value{
-\preformatted{list(
+\if{html}{\out{<div class="sourceCode">}}\preformatted{list(
   base_url,
   auth,
   agent = list(
@@ -17,7 +17,7 @@ getLockerConfig()
   ),
   language
 )
-}
+}\if{html}{\out{</div>}}
 }
 \description{
 Return Learning Locker configuration for current session.

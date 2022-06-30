@@ -56,14 +56,6 @@ scripts <- function() {
     if (class(session)[1] != "ShinySession") {
       stop(call. = FALSE)
     } else {
-      # Setup environment variables
-      BASE_DIR <- normalizePath(getwd())
-      APP_NAME <- basename(BASE_DIR)
-      APP_ROOT <- BASE_DIR
-
-      Sys.setenv("APP_NAME" = APP_NAME)
-      Sys.setenv("APP_ROOT" = APP_ROOT)
-      
       logging <- Sys.getenv("XAPI_LOGGING")
       
       connection <- list(
@@ -220,7 +212,14 @@ isLocal <- function() {
 #' @return path
 #' @export
 getAppRoot <- function() {
-  return(Sys.getenv("APP_ROOT"))
+  BASE_DIR <- normalizePath(getwd())
+  APP_NAME <- basename(BASE_DIR)
+  APP_ROOT <- BASE_DIR
+  
+  Sys.setenv("APP_NAME" = APP_NAME)
+  Sys.setenv("APP_ROOT" = APP_ROOT)
+  
+  return(APP_ROOT)
 }
 
 #' Retrieve App Identifier
