@@ -71,9 +71,6 @@ scripts <- function() {
         message("xAPI Logging Disabled")
       }
       
-      # Store app metadata globally for shared use
-      #APP_META <<- getAppMeta()
-      
       shiny::observeEvent(session$input$eventListener, {
         if(session$input$eventListener == "diagnostics") {
           shiny::showModal(shiny::modalDialog(
@@ -129,12 +126,14 @@ scripts <- function() {
 #' 
 #' App input observers
 .bindInputEvents <- function(session) {
-  shiny::observe({
-    # TODO: Make input list reactive and bind new observers only on creation
-    sapply(shiny::isolate(names(session$input)), function(i) {
-      shiny::observeEvent(session$input[[i]], {
-        .logInteraction(session, i)
+  .inputElements <- c()
+  
+  shiny::observeEvent(names(session$input), {
+    sapply(setdiff(names(session$input), .inputElements), function(i) {
+      observeEvent(session$input[[i]], {
+        .logInteraction(session, i)  
       }, ignoreNULL = TRUE, ignoreInit = TRUE, priority = -1)
+      .inputElements <<- append(.inputElements, i)
     })
   })
 }
