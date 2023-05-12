@@ -13,23 +13,31 @@ html
 Renders licensing info as HTML.
 }
 \section{License Details}{
-\preformatted{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-}
-\subsection{Attribution}{\preformatted{You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+}\if{html}{\out{</div>}}
+\subsection{Attribution}{
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{You must give appropriate credit, provide a link to the license, and indicate if changes were made.
 You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-}
-}
-
-\subsection{NonCommercial}{\preformatted{You may not use the material for commercial purposes.
-}
+}\if{html}{\out{</div>}}
 }
 
-\subsection{ShareAlike}{\preformatted{If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
-}
+\subsection{NonCommercial}{
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{You may not use the material for commercial purposes.
+}\if{html}{\out{</div>}}
 }
 
-\subsection{No additional restrictions}{\preformatted{You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+\subsection{ShareAlike}{
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+}\if{html}{\out{</div>}}
 }
+
+\subsection{No additional restrictions}{
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+}\if{html}{\out{</div>}}
 }
 }
 
