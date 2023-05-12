@@ -21,8 +21,8 @@ todo: capture function definitions to see if previous line has any comments
 }
 \section{Functions}{
 \itemize{
-\item \code{boast_comment_linter}: checks that code is commented
+\item \code{boast_comment_linter()}: checks that code is commented
 
-\item \code{boast_function_linter}: checks that code is using function calls
+\item \code{boast_function_linter()}: checks that code is using function calls
+
 }}
-

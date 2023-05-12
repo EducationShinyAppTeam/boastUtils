@@ -70,7 +70,7 @@ scripts <- function() {
       )
 
       # Store connection details
-      if(logging) {
+      if (logging) {
         connection <- boastUtils:::.boastConnect(session)
         boastUtils:::.bindInputEvents(session)
         boastUtils:::.bindSessionEnd(session)
@@ -212,7 +212,7 @@ isLocal <- function() {
 getAppRoot <- function() {
   APP_ROOT <- NA
   
-  if(isLocal()) {
+  if (isLocal()) {
     # Assume current working directory is the app root.
     APP_ROOT <- getwd()
   } else {
@@ -242,7 +242,7 @@ getAppIdentifier <- function() {
   temp_uuid <- uuid::UUIDgenerate()
 
   # Check if metadata file exists
-  if(file.exists(DESCRIPTION)) {
+  if (file.exists(DESCRIPTION)) {
     # Check to see if identifier is stored, if not, store it.
     stored_uuid <- read.dcf(DESCRIPTION, fields = "UUID")
     if (!is.na(stored_uuid[1])) {
@@ -303,7 +303,7 @@ getAppIdentifier <- function() {
 #'
 #' @export
 getAppMeta <- function() {
-  meta <- NA_character_
+  meta <- list()
   tryCatch({
     # Get root directory of current app.
     APP_ROOT <- getAppRoot()
@@ -313,7 +313,7 @@ getAppMeta <- function() {
       DESCRIPTION <- file.path(APP_ROOT, "DESCRIPTION")
 
       # Check if DESCRIPTION file exists.
-      if(file.exists(DESCRIPTION)) {
+      if (file.exists(DESCRIPTION)) {
         # Read contents of DESCRIPTION file; empty file returns a <0 x 0 matrix>.
         # If this causes problems try removing textConnection portion.
         con <- textConnection(shiny:::readUTF8(DESCRIPTION))
@@ -321,12 +321,12 @@ getAppMeta <- function() {
         contents <- read.dcf(con)
 
         # If DESCRIPTION file has content, return it as a list.
-        if(length(contents)) {
+        if (length(contents)) {
           cols <- colnames(contents)
           vectors_allowed <- c("Authors@R", "LearningObjectives")
           meta <- lapply(cols, function(key) {
             value <- contents[1,key][[1]]
-            if(key %in% vectors_allowed) {
+            if (key %in% vectors_allowed) {
               tryCatch({
                 # Some keys can have multiple values stored in a vector.
                 # Try to extract the quoted values; if unsuccessful, return unparsed value.
@@ -378,7 +378,7 @@ getAppTitle <- function(case = "title", short = TRUE) {
 
   # Check if APP_META is set; retrieve if not.
   meta <- NA
-  if(!exists("APP_META")) {
+  if (!exists("APP_META")) {
     meta <- getAppMeta()
   } else {
     meta <- APP_META
@@ -387,11 +387,11 @@ getAppTitle <- function(case = "title", short = TRUE) {
   # Check if metadata list contains data and is not all NA's.
   # If checking lists for NA you'll end up with:
   #   the condition has length > 1 and only the first element will be used
-  if(!is.na(all(is.na(meta)))) {
+  if (!is.na(all(is.na(meta)))) {
     title <- ifelse(short, meta$ShortName, meta$Title)
-    if(!is.na(title)) {
+    if (!is.na(title)) {
       # We are just going to assume it is in title case already (because it should be).
-      if(case == "snake") {
+      if (case == "snake") {
         title <- gsub("[[:punct:]]", "", title) # Remove punctuation
         title <- gsub(" ", "_", title) # Replace spaces with underscores
         # TODO: stringr/stringi str_to_title would be much better for this
@@ -449,9 +449,9 @@ citeApp <- function() {
   metaData <- getAppMeta()
   
   tryCatch({
-    if(length(metaData) >= 1 && !is.na(metaData)) {
+    if (length(metaData) != 0) {
       authors <- "<<MISSING_AUTHORS@R>>"
-      if(!is.null(metaData$`Authors@R`)) {
+      if (!is.null(metaData$`Authors@R`)) {
         autDF <- data.frame(
           family = unlist(metaData$`Authors@R`$family),
           given = unlist(metaData$`Authors@R`$given)
@@ -463,7 +463,7 @@ citeApp <- function() {
       
         # Remove contributors if they exist in meta
         ctb <- which(autDF$role == "ctb")
-        if(length(ctb)) {
+        if (length(ctb)) {
           autDF <- autDF[-ctb,]   
         }
         
@@ -508,7 +508,7 @@ citeApp <- function() {
         url
       )
       
-      if(grepl("<<MISSING_", listing)) {
+      if (grepl("<<MISSING_", listing)) {
         warning(paste("Missing metadata detected please see: https://github.com/EducationShinyAppTeam/App_Template/blob/master/DESCRIPTION\n ",listing))   
       }
       

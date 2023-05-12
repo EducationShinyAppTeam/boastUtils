@@ -1,8 +1,8 @@
 Package: boastUtils
 Type: Package
 Title: BOAST Utilities
-Version: 0.1.11.1
-Date: 2021-08-6
+Version: 0.1.11.2
+Date: 2023-05-12
 Authors@R: c(
   person("Robert", "Carey", email = "rpc5102@psu.edu", role = c("aut", "cre")),
   person("Neil", "Hatfield", email = "njh5464@psu.edu", role = "aut"),
@@ -21,6 +21,6 @@ LazyData: true
 Depends: config, htmltools, httr, shiny (>= 0.11), shinydashboard
 Imports: rLocker (>= 0.2.5)
 Suggests: sofa, stringr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Remotes: EducationShinyAppTeam/rLocker
