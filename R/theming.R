@@ -320,7 +320,7 @@ surveyLink <- function(name = NA, markup = TRUE) {
   link <- paste0("https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=", htmltools::urlEncodePath(appName))
   
   if(markup) {
-    link <- tags$a(target = "_blank", icon("comments"), href = link)  
+    link <- tags$a(target = "_blank", icon(name = "comments", class = "fa-solid"), href = link)  
   }
   
   return(link)
