@@ -9,6 +9,7 @@ Authors@R: c(
   person("Dennis", "Pearl", email = "dkp13@psu.edu", role = "ctb")
   )
 Maintainer: Robert Carey <rpc5102@psu.edu>
+Description: Used to provide reusable components, gadgets, and modules for the BOAST project.
 LearningObjectives: c(
     "The student will learn to understand Concept A in way z.",
     "The student will learn to understand Concept B as description y"
