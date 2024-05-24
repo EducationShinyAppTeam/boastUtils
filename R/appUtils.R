@@ -361,7 +361,7 @@ getAppMeta <- function() {
 
 #' Get app title
 #'
-#' Returns tile stored in app's DESCRIPTION file.
+#' Returns title stored in app's DESCRIPTION file.
 #'
 #' @usage getAppTitle()
 #'
@@ -519,4 +519,24 @@ citeApp <- function() {
   }, warning = function(cond) {
     warning(cond)
   })
+}
+
+#' Feedman-Diaconis Rule
+#'
+#' Returns appropriate binwidth for histograms following the Feedman-Diaconis rule.
+#'
+#' @usage feedmanDiaconis(x)
+#' 
+#' @param x numerical data vector
+#' @return number
+#'
+
+#'
+#' @export
+feedmanDiaconis <- function(x) {
+  ifelse(
+    test = IQR(x) == 0,
+    yes = 0.1,
+    no = 2 * IQR(x) / (length(x)^(1/3))
+  )
 }
