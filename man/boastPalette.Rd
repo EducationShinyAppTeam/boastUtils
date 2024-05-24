@@ -22,5 +22,7 @@ showPalette(boastPalette)
 }
 \seealso{
 \href{https://www.nature.com/articles/nmeth.1618}{https://www.nature.com/articles/nmeth.1618}
+
+\href{https://davidmathlogic.com/colorblind/#\%23D81B60-\%231E88E5-\%23FFC107-\%23004D40}{https://davidmathlogic.com/colorblind/#\%23D81B60-\%231E88E5-\%23FFC107-\%23004D40}
 }
 \keyword{datasets}

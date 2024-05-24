@@ -10,7 +10,7 @@ getAppTitle()
 character
 }
 \description{
-Returns tile stored in app's DESCRIPTION file.
+Returns title stored in app's DESCRIPTION file.
 }
 \examples{
 > getAppTitle()

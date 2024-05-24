@@ -23,6 +23,6 @@ LazyData: true
 Depends: config, htmltools, httr, shiny (>= 0.11), shinydashboard
 Imports: rLocker (>= 0.2.5)
 Suggests: sofa, stringr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
 Remotes: EducationShinyAppTeam/rLocker
