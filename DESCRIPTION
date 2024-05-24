@@ -1,8 +1,8 @@
 Package: boastUtils
 Type: Package
 Title: BOAST Utilities
-Version: 0.1.11.3
-Date: 2023-07-07
+Version: 0.1.12
+Date: 2024-05-24
 Authors@R: c(
   person("Robert", "Carey", email = "rpc5102@psu.edu", role = c("aut", "cre")),
   person("Neil", "Hatfield", email = "njh5464@psu.edu", role = "aut"),
@@ -11,8 +11,9 @@ Authors@R: c(
 Maintainer: Robert Carey <rpc5102@psu.edu>
 Description: Used to provide reusable components, gadgets, and modules for the BOAST project.
 LearningObjectives: c(
-    "The student will learn to understand Concept A in way z.",
-    "The student will learn to understand Concept B as description y"
+    "Students in the project will learn to create apps meant to support other students' learning.",
+    "Students in the project will develop their R coding skills.",
+    "Students in the project will learn to follow a style guide when coding."
   )
 URL: https://github.com/EducationShinyAppTeam/boastUtils
 BugReports: https://github.com/EducationShinyAppTeam/boastUtils/issues
