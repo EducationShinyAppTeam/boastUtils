@@ -8,6 +8,7 @@ NULL
 #'
 #' Based on the Wong Color Blind Set
 #' @seealso \href{https://www.nature.com/articles/nmeth.1618}{https://www.nature.com/articles/nmeth.1618}
+#' @seealso \href{https://davidmathlogic.com/colorblind/#%23D81B60-%231E88E5-%23FFC107-%23004D40}{https://davidmathlogic.com/colorblind/#%23D81B60-%231E88E5-%23FFC107-%23004D40}
 #'
 #' @return A palette
 #'
@@ -19,12 +20,12 @@ boastPalette <- c(
   "#0072B2",
   "#D55E00",
   "#009E73",
-  "#CE77A8",
-  "#000000",
-  "#E69F00",
-  "#999999",
+  "#AA4499",
   "#56B4E9",
-  "#CC79A7"
+  "#E69F00",
+  "#CC79A7",
+  "#000000",
+  "#999999"
 )
 
 #' psuPalette
