@@ -257,7 +257,7 @@ copyrightInfo <- function() {
 
 #' Icons for Apps
 #'
-#' @param icon Icon style \code{[default, correct, incorrect, partial]}
+#' @param icon Icon style \code{[default, correct, incorrect, partial, unknown]}
 #' @param width Icon width (in pixels)
 #' @param html FALSE to render as shinyUI or TRUE to return html markup \code{[FALSE, TRUE]}
 #'
@@ -280,10 +280,12 @@ renderIcon <- function(icon = "default", width = 36, html = FALSE){
 
   if (icon == "correct") {
      markup <- img(src = "icons/correct.png", alt = "Success, you are correct", width = width)
-  } else if(icon == "incorrect") {
+  } else if (icon == "incorrect") {
     markup <- img(src = "icons/incorrect.png", alt = "Sorry, you are incorrect; please check the feedback", width = width)
-  } else if(icon == "partial") {
+  } else if (icon == "partial") {
     markup <- img(src = "icons/partial.png", alt = "You're partially correct; please check the feedback", width = width)
+  } else if (icon == "unknown") {
+    markup <- img(src = "icons/unknown.png", alt = "Information is currently unknown", width = width)
   } else {
     # default
   }
